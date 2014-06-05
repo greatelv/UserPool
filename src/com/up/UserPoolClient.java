@@ -29,6 +29,7 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class UserPoolClient extends JFrame {
 
@@ -39,6 +40,12 @@ public class UserPoolClient extends JFrame {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	private JTextField textField_4;
+	private JTextField textField_5;
+	private JTextField textField_6;
+	private JTextField textField_7;
+	private JTextField textField_8;
+	private JTextField textField_9;
 
 	/**
 	 * Launch the application.
@@ -100,8 +107,8 @@ public class UserPoolClient extends JFrame {
 		table.setFillsViewportHeight(true);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"1", "\uC804\uD0DC\uACBD", "\uB0A8\uC131", "010-5026-3671"},
-				{null, null, null, null},
+				{"wjswjs2", "\uC804\uD0DC\uACBD", "\uB0A8\uC131", "010-5026-3671"},
+				{"", null, null, null},
 				{null, null, null, null},
 				{null, null, null, null},
 				{null, null, null, null},
@@ -130,7 +137,7 @@ public class UserPoolClient extends JFrame {
 				{null, null, null, null},
 			},
 			new String[] {
-				"\uD68C\uC6D0\uBC88\uD638", "\uD68C\uC6D0\uBA85", "\uC131\uBCC4", "\uC804\uD654\uBC88\uD638"
+				"\uD68C\uC6D0\uC544\uC774\uB514", "\uD68C\uC6D0\uBA85", "\uC131\uBCC4", "\uC804\uD654\uBC88\uD638"
 			}
 		) {
 			Class[] columnTypes = new Class[] {
@@ -153,53 +160,53 @@ public class UserPoolClient extends JFrame {
 		panel_1.setLayout(null);
 		
 		JLabel label = new JLabel("\uD68C\uC6D0\uBA85");
-		label.setBounds(12, 37, 57, 15);
+		label.setBounds(12, 66, 57, 15);
 		panel_1.add(label);
 		
 		JLabel label_1 = new JLabel("\uC131\uBCC4");
-		label_1.setBounds(12, 86, 24, 15);
+		label_1.setBounds(12, 109, 24, 15);
 		panel_1.add(label_1);
 		
 		JLabel label_2 = new JLabel("\uC774\uBA54\uC77C");
-		label_2.setBounds(12, 131, 57, 15);
+		label_2.setBounds(12, 152, 57, 15);
 		panel_1.add(label_2);
 		
 		textField = new JTextField();
-		textField.setBounds(79, 34, 116, 21);
+		textField.setBounds(79, 63, 116, 21);
 		panel_1.add(textField);
 		textField.setColumns(10);
 		
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("\uC5EC\uC131");
 		buttonGroup.add(rdbtnNewRadioButton);
-		rdbtnNewRadioButton.setBounds(79, 82, 57, 23);
+		rdbtnNewRadioButton.setBounds(79, 105, 57, 23);
 		panel_1.add(rdbtnNewRadioButton);
 		
 		JRadioButton radioButton = new JRadioButton("\uB0A8\uC131");
 		buttonGroup.add(radioButton);
-		radioButton.setBounds(148, 82, 57, 23);
+		radioButton.setBounds(148, 105, 57, 23);
 		panel_1.add(radioButton);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(79, 128, 184, 21);
+		textField_1.setBounds(79, 149, 184, 21);
 		panel_1.add(textField_1);
 		textField_1.setColumns(10);
 		
 		JLabel label_3 = new JLabel("\uD734\uB300\uD3F0");
-		label_3.setBounds(12, 176, 57, 15);
+		label_3.setBounds(12, 197, 57, 15);
 		panel_1.add(label_3);
 		
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
-		textField_2.setBounds(79, 173, 184, 21);
+		textField_2.setBounds(79, 194, 184, 21);
 		panel_1.add(textField_2);
 		
 		JLabel label_4 = new JLabel("\uC8FC\uC18C");
-		label_4.setBounds(12, 224, 57, 15); 
+		label_4.setBounds(12, 241, 57, 15); 
 		panel_1.add(label_4);
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
-		textField_3.setBounds(79, 221, 184, 21);
+		textField_3.setBounds(79, 238, 184, 21);
 		panel_1.add(textField_3);
 		
 		JButton btnNewButton = new JButton("\uB4F1\uB85D");
@@ -210,8 +217,91 @@ public class UserPoolClient extends JFrame {
 		btnNewButton.setBounds(0, 292, 429, 61);
 		panel_1.add(btnNewButton);
 		
+		JLabel label_5 = new JLabel("\uC544\uC774\uB514");
+		label_5.setBounds(12, 26, 57, 15);
+		panel_1.add(label_5);
+		
+		textField_4 = new JTextField();
+		textField_4.setColumns(10);
+		textField_4.setBounds(79, 23, 116, 21);
+		panel_1.add(textField_4);
+		
 		JPanel panel_2 = new JPanel();
+		panel_2.setLayout(null);
 		tabbedPane.addTab("\uD68C\uC6D0\uAD00\uB9AC", null, panel_2, null);
+		
+		JLabel label_6 = new JLabel("\uD68C\uC6D0\uBA85");
+		label_6.setBounds(12, 66, 57, 15);
+		panel_2.add(label_6);
+		
+		JLabel label_7 = new JLabel("\uC131\uBCC4");
+		label_7.setBounds(12, 109, 24, 15);
+		panel_2.add(label_7);
+		
+		JLabel label_8 = new JLabel("\uC774\uBA54\uC77C");
+		label_8.setBounds(12, 152, 57, 15);
+		panel_2.add(label_8);
+		
+		textField_5 = new JTextField();
+		textField_5.setColumns(10);
+		textField_5.setBounds(79, 63, 116, 21);
+		panel_2.add(textField_5);
+		
+		JRadioButton radioButton_1 = new JRadioButton("\uC5EC\uC131");
+		radioButton_1.setBounds(79, 105, 57, 23);
+		panel_2.add(radioButton_1);
+		
+		JRadioButton radioButton_2 = new JRadioButton("\uB0A8\uC131");
+		radioButton_2.setBounds(148, 105, 57, 23);
+		panel_2.add(radioButton_2);
+		
+		textField_6 = new JTextField();
+		textField_6.setColumns(10);
+		textField_6.setBounds(79, 149, 184, 21);
+		panel_2.add(textField_6);
+		
+		JLabel label_9 = new JLabel("\uD734\uB300\uD3F0");
+		label_9.setBounds(12, 197, 57, 15);
+		panel_2.add(label_9);
+		
+		textField_7 = new JTextField();
+		textField_7.setColumns(10);
+		textField_7.setBounds(79, 194, 184, 21);
+		panel_2.add(textField_7);
+		
+		JLabel label_10 = new JLabel("\uC8FC\uC18C");
+		label_10.setBounds(12, 241, 57, 15);
+		panel_2.add(label_10);
+		
+		textField_8 = new JTextField();
+		textField_8.setColumns(10);
+		textField_8.setBounds(79, 238, 184, 21);
+		panel_2.add(textField_8);
+		
+		JButton button = new JButton("\uC218\uC815");
+		button.setBounds(234, 292, 195, 61);
+		panel_2.add(button);
+		
+		JLabel label_11 = new JLabel("\uC544\uC774\uB514");
+		label_11.setBounds(12, 26, 57, 15);
+		panel_2.add(label_11);
+		
+		textField_9 = new JTextField();
+		textField_9.setColumns(10);
+		textField_9.setBounds(79, 23, 116, 21);
+		panel_2.add(textField_9);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(319, 10, 98, 21);
+		panel_2.add(comboBox);
+		
+		JButton button_1 = new JButton("\uC0AD\uC81C");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		button_1.setBounds(0, 292, 195, 61);
+		panel_2.add(button_1);
 		
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("\uB9CC\uB4E0\uC774", null, panel_3, null);
