@@ -183,10 +183,12 @@ public class UserPoolClient extends JFrame{
 		textField_3.setBounds(79, 238, 184, 21);
 		userRegTab.add(textField_3);
 
-		JButton btnNewButton = new JButton("등록");
-		
-		//유저 등록 버튼 이벤트 핸들러
-		btnNewButton.addActionListener(new ActionListener() {
+		/**
+		 * 회원등록 - 회원 등록
+		 */
+		JButton btnReg = new JButton("등록");
+		btnReg.setBounds(0, 292, 429, 61);
+		btnReg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
@@ -202,8 +204,8 @@ public class UserPoolClient extends JFrame{
 				
 			}
 		});
-		btnNewButton.setBounds(0, 292, 429, 61);
-		userRegTab.add(btnNewButton);
+		userRegTab.add(btnReg);
+		
 
 		JLabel label_5 = new JLabel("\uC544\uC774\uB514");
 		label_5.setBounds(12, 26, 57, 15);
@@ -266,9 +268,7 @@ public class UserPoolClient extends JFrame{
 		textField_8.setBounds(79, 238, 184, 21);
 		userManTab.add(textField_8);
 
-		JButton button = new JButton("삭제");
-		button.setBounds(234, 292, 195, 61);
-		userManTab.add(button);
+		
 
 		JLabel label_11 = new JLabel("\uC544\uC774\uB514");
 		label_11.setBounds(12, 26, 57, 15);
@@ -282,13 +282,26 @@ public class UserPoolClient extends JFrame{
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(319, 10, 98, 21);
 		userManTab.add(comboBox);
-
-		JButton button_1 = new JButton("수정");
 		
-		button_1.addActionListener(new ActionListener() {
+		
+		/**
+		 * 회원관리 - 회원 삭제
+		 */
+		JButton btnDel = new JButton("삭제");
+		btnDel.setBounds(0, 292, 195, 61);
+		btnDel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				
+			}
+		});
+		userManTab.add(btnDel);
+		
+		/**
+		 * 회원관리 - 회원 수정 
+		 */
+		JButton btnEdit = new JButton("수정");
+		btnEdit.setBounds(234, 292, 195, 61);
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				try {
 					dataOut.writeUTF("2");
 					dataOut.flush();
@@ -301,8 +314,19 @@ public class UserPoolClient extends JFrame{
 				
 			}
 		});
-		button_1.setBounds(0, 292, 195, 61);
-		userManTab.add(button_1);
+		userManTab.add(btnEdit);
+		
+		/**
+		 * 회원관리 - 회원 내보내기 
+		 */
+		JButton btnExport = new JButton("\uB0B4\uBCF4\uB0B4\uAE30");
+		btnExport.setBounds(319, 41, 98, 23);
+		btnExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		userManTab.add(btnExport);
+		
 
 		JPanel copy = new JPanel();
 		tabbedPane.addTab("\uB9CC\uB4E0\uC774", null, copy, null);
