@@ -284,6 +284,7 @@ public class UserPoolClient extends JFrame{
 		userManTab.add(comboBox);
 
 		JButton button_1 = new JButton("수정");
+		
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
