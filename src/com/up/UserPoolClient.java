@@ -18,16 +18,18 @@ public class UserPoolClient extends JFrame{
 	private static Socket socket;
 	private static DataInputStream dataIn;
 	private static DataOutputStream dataOut;
+	
+	UserPoolParser parse = new UserPoolParser();
 
 
 	private JPanel contentPane;
 	private JTable table;
-	private JTextField textField;
+	private JTextField formName;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField formMail;
+	private JTextField formPhone;
+	private JTextField formAddr;
+	private JTextField formId;
 	private JTextField textField_5;
 	private JTextField textField_6;
 	private JTextField textField_7;
@@ -133,55 +135,55 @@ public class UserPoolClient extends JFrame{
 		tabbedPane.addTab("\uD68C\uC6D0\uB4F1\uB85D", null, userRegTab, null);
 		userRegTab.setLayout(null);
 
-		JLabel label = new JLabel("\uD68C\uC6D0\uBA85");
-		label.setBounds(12, 66, 57, 15);
-		userRegTab.add(label);
+		JLabel labelName = new JLabel("\uD68C\uC6D0\uBA85");
+		labelName.setBounds(12, 66, 57, 15);
+		userRegTab.add(labelName);
 
-		JLabel label_1 = new JLabel("\uC131\uBCC4");
-		label_1.setBounds(12, 109, 24, 15);
-		userRegTab.add(label_1);
+		JLabel labelGender = new JLabel("\uC131\uBCC4");
+		labelGender.setBounds(12, 109, 24, 15);
+		userRegTab.add(labelGender);
 
-		JLabel label_2 = new JLabel("\uC774\uBA54\uC77C");
-		label_2.setBounds(12, 152, 57, 15);
-		userRegTab.add(label_2);
+		JLabel labelMail = new JLabel("\uC774\uBA54\uC77C");
+		labelMail.setBounds(12, 152, 57, 15);
+		userRegTab.add(labelMail);
 
-		textField = new JTextField();
-		textField.setBounds(79, 63, 116, 21);
-		userRegTab.add(textField);
-		textField.setColumns(10);
+		formName = new JTextField();
+		formName.setBounds(79, 63, 116, 21);
+		userRegTab.add(formName);
+		formName.setColumns(10);
 
-		JRadioButton rBtnFemale = new JRadioButton("\uC5EC\uC131");
+		JRadioButton rBtnFemale = new JRadioButton("여성");
 		buttonGroup.add(rBtnFemale);
 		rBtnFemale.setBounds(79, 105, 57, 23);
 		userRegTab.add(rBtnFemale);
 
-		JRadioButton rBtnmale = new JRadioButton("\uB0A8\uC131");
+		JRadioButton rBtnmale = new JRadioButton("남성");
 		buttonGroup.add(rBtnmale);
 		rBtnmale.setBounds(148, 105, 57, 23);
 		userRegTab.add(rBtnmale);
 
-		textField_1 = new JTextField();
-		textField_1.setBounds(79, 149, 184, 21);
-		userRegTab.add(textField_1);
-		textField_1.setColumns(10);
+		formMail = new JTextField();
+		formMail.setBounds(79, 149, 184, 21);
+		userRegTab.add(formMail);
+		formMail.setColumns(10);
 
-		JLabel label_3 = new JLabel("\uD734\uB300\uD3F0");
-		label_3.setBounds(12, 197, 57, 15);
-		userRegTab.add(label_3);
+		JLabel labelPhone = new JLabel("\uD734\uB300\uD3F0");
+		labelPhone.setBounds(12, 197, 57, 15);
+		userRegTab.add(labelPhone);
 
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(79, 194, 184, 21);
-		userRegTab.add(textField_2);
+		formPhone = new JTextField();
+		formPhone.setColumns(10);
+		formPhone.setBounds(79, 194, 184, 21);
+		userRegTab.add(formPhone);
 
-		JLabel label_4 = new JLabel("\uC8FC\uC18C");
-		label_4.setBounds(12, 241, 57, 15); 
-		userRegTab.add(label_4);
+		JLabel labelAddr = new JLabel("\uC8FC\uC18C");
+		labelAddr.setBounds(12, 241, 57, 15); 
+		userRegTab.add(labelAddr);
 
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(79, 238, 184, 21);
-		userRegTab.add(textField_3);
+		formAddr = new JTextField();
+		formAddr.setColumns(10);
+		formAddr.setBounds(79, 238, 184, 21);
+		userRegTab.add(formAddr);
 
 		/**
 		 * 회원등록 - 회원 등록
@@ -190,12 +192,13 @@ public class UserPoolClient extends JFrame{
 		btnReg.setBounds(0, 292, 429, 61);
 		btnReg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				try {
-					dataOut.writeUTF("1");
-					dataOut.flush();
 					
-					//System.out.println(dataIn.readUTF());
+					String message = parse.joinMessage("post", 
+							formId.getText(), formName.getText(), formMail.getText(), "남성", formPhone.getText(), formAddr.getText()); 
+					
+					dataOut.writeUTF(message);
+					dataOut.flush();
 					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -207,14 +210,14 @@ public class UserPoolClient extends JFrame{
 		userRegTab.add(btnReg);
 		
 
-		JLabel label_5 = new JLabel("\uC544\uC774\uB514");
-		label_5.setBounds(12, 26, 57, 15);
-		userRegTab.add(label_5);
+		JLabel labelId = new JLabel("\uC544\uC774\uB514");
+		labelId.setBounds(12, 26, 57, 15);
+		userRegTab.add(labelId);
 
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(79, 23, 116, 21);
-		userRegTab.add(textField_4);
+		formId = new JTextField();
+		formId.setColumns(10);
+		formId.setBounds(79, 23, 116, 21);
+		userRegTab.add(formId);
 
 		JPanel userManTab = new JPanel();
 		userManTab.setLayout(null);

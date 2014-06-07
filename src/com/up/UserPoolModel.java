@@ -15,49 +15,59 @@ import java.net.Socket;
 
 public class UserPoolModel{
 	
-	String user_id;
-	String user_name;
-	String user_gender;
-	String user_email;
-	String user_phone;
-	String user_address;
+	String method;
+	String id;
+	String name;
+	String gender;
+	String email;
+	String phone;
+	String address;
+	public String getMethod() {
+		return method;
+	}
+	public void setMethod(String method) {
+		this.method = method;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	
-	public String getUser_id() {
-		return user_id;
-	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
-	}
-	public String getUser_name() {
-		return user_name;
-	}
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
-	}
-	public String getUser_gender() {
-		return user_gender;
-	}
-	public void setUser_gender(String user_gender) {
-		this.user_gender = user_gender;
-	}
-	public String getUser_email() {
-		return user_email;
-	}
-	public void setUser_email(String user_email) {
-		this.user_email = user_email;
-	}
-	public String getUser_phone() {
-		return user_phone;
-	}
-	public void setUser_phone(String user_phone) {
-		this.user_phone = user_phone;
-	}
-	public String getUser_address() {
-		return user_address;
-	}
-	public void setUser_address(String user_address) {
-		this.user_address = user_address;
-	}
+	
+	
+
 	
 	
 	

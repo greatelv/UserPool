@@ -19,16 +19,19 @@ public class UserPoolParser{
 	//String Line을 UserPool 데이터 모델로 변경
 	public UserPoolModel toModel(String message){
 		
+		System.out.println(message);
+		
 		UserPoolModel model = new UserPoolModel();
 		StringTokenizer stk = new StringTokenizer(message, "|");
 		// nextToken() 메소드를 이용해 파싱한 토큰을 가져와 name에 설정.
 		
-		model.setUser_id(stk.nextToken());
-		model.setUser_name(stk.nextToken());
-		model.setUser_gender(stk.nextToken());
-		model.setUser_email(stk.nextToken());
-		model.setUser_phone(stk.nextToken());
-		model.setUser_address(stk.nextToken());
+		model.setMethod(stk.nextToken());
+		model.setId(stk.hasMoreTokens() ? stk.nextToken() : "");
+		model.setName(stk.hasMoreTokens() ? stk.nextToken() : "");
+		model.setGender(stk.hasMoreTokens() ? stk.nextToken() : "");
+		model.setEmail(stk.hasMoreTokens() ? stk.nextToken() : "");
+		model.setPhone(stk.hasMoreTokens() ? stk.nextToken() : "");
+		model.setAddress(stk.hasMoreTokens() ? stk.nextToken() : "");
 		
 		return model;
 	}
@@ -37,16 +40,18 @@ public class UserPoolParser{
 	public String toMessage(UserPoolModel model){
 		
 		String message = 
-				model.getUser_id()+"|"+
-				model.getUser_name()+"|"+
-				model.getUser_gender()+"|"+
-				model.getUser_email()+"|"+
-				model.getUser_phone()+"|"+
-				model.getUser_address();
+				model.getId()+"|"+
+				model.getName()+"|"+
+				model.getGender()+"|"+
+				model.getEmail()+"|"+
+				model.getPhone()+"|"+
+				model.getAddress();
 		
 		return message;
 	}
 	
-	
+	public String joinMessage(String method, String id, String name, String gender, String email, String phone, String addr){
+		return method+"|"+id+"|"+name+"|"+gender+"|"+email+"|"+phone+"|"+addr;
+	}
 
 }

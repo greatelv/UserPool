@@ -15,6 +15,8 @@ public class UserPoolHandler implements Runnable {
 	protected DataOutputStream dataOut;
 	protected Thread listener;
 	private Date pdate;
+	
+	UserPoolParser parser = new UserPoolParser();
 
 	/**
 	 * 생성자 : PizzaHandler() 
@@ -70,32 +72,30 @@ public class UserPoolHandler implements Runnable {
 		try {
 			while (!Thread.interrupted()) {
 				String message = dataIn.readUTF();
+				UserPoolModel model = parser.toModel(message);
+				
 				try {
+					System.out.println("model method : "+model.getMethod());
 					
-					if(message.equals("1")){
-						System.out.println("POST");
-					}else if(message.equals("2")){
-						dataOut.writeUTF("GET");
-						dataOut.flush();
+					switch(model.getMethod()){
+						case "post" :
+							/*System.out.println("이런젠장 "model.getGender());*/
+							System.out.println("회원 등록");
+							break;
+						case "get" :
+							System.out.println("회원 조회");
+							
+							dataOut.writeUTF("User");
+							dataOut.flush();
+							
+							break;
+						case "put" :
+							System.out.println("회원 수정");
+							break;
+						case "delete" :
+							System.out.println("회원 삭제");
+							break;
 					}
-					
-					
-/*					StringTokenizer stk = new StringTokenizer(message, "|");
-					// nextToken() 메소드를 이용해 파싱한 토큰을 가져와 name에 설정.
-					String name = stk.nextToken();
-					// 다음 토큰을 가져와 설정합니다.
-					String address = stk.nextToken();
-					String phone = stk.nextToken();
-					String pkind = stk.nextToken();
-					String psize = stk.nextToken();
-
-					
-					pdate = new Date();
-					System.out.println(pdate.toString());
-					System.out.println("주문자 성명 : " + name);
-					System.out.println("배달 주소 : " + address);
-					System.out.println("연락처 : " + phone);
-					System.out.println("주문피자 : " + pkind + " " + psize + "\n");*/
 					
 				} catch (NoSuchElementException e) {
 					stop();
