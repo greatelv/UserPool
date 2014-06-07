@@ -71,7 +71,16 @@ public class UserPoolHandler implements Runnable {
 			while (!Thread.interrupted()) {
 				String message = dataIn.readUTF();
 				try {
-					StringTokenizer stk = new StringTokenizer(message, "|");
+					
+					if(message.equals("1")){
+						System.out.println("POST");
+					}else if(message.equals("2")){
+						dataOut.writeUTF("GET");
+						dataOut.flush();
+					}
+					
+					
+/*					StringTokenizer stk = new StringTokenizer(message, "|");
 					// nextToken() 메소드를 이용해 파싱한 토큰을 가져와 name에 설정.
 					String name = stk.nextToken();
 					// 다음 토큰을 가져와 설정합니다.
@@ -86,7 +95,8 @@ public class UserPoolHandler implements Runnable {
 					System.out.println("주문자 성명 : " + name);
 					System.out.println("배달 주소 : " + address);
 					System.out.println("연락처 : " + phone);
-					System.out.println("주문피자 : " + pkind + " " + psize + "\n");
+					System.out.println("주문피자 : " + pkind + " " + psize + "\n");*/
+					
 				} catch (NoSuchElementException e) {
 					stop();
 				}
