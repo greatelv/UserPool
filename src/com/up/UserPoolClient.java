@@ -8,30 +8,44 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+
 import java.awt.Font;
 import java.awt.Color;
+
 import javax.swing.SwingConstants;
 import javax.swing.JList;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
+
 import java.awt.SystemColor;
+
 import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.*;
+import java.net.Socket;
+
 import javax.swing.JComboBox;
 
 public class UserPoolClient extends JFrame {
+	
+	private static Socket socket;
+	private static DataInputStream dataIn;
+	private static DataOutputStream dataOut;
 
 	private JPanel contentPane;
 	private JTable table;
@@ -56,6 +70,21 @@ public class UserPoolClient extends JFrame {
 				try {
 					UserPoolClient frame = new UserPoolClient();
 					frame.setVisible(true);
+					
+					try {
+						//클라이언트 실행시 소켓 서버 커넥션 획득
+						System.out.println("해피");
+						
+						socket = new Socket("127.0.0.1", 9000);
+						dataIn = new DataInputStream(new BufferedInputStream(socket
+								.getInputStream()));
+						dataOut = new DataOutputStream(new BufferedOutputStream(socket
+								.getOutputStream()));
+						
+					} catch (IOException ie) {
+						ie.printStackTrace();
+						stop();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -305,5 +334,22 @@ public class UserPoolClient extends JFrame {
 		
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("\uB9CC\uB4E0\uC774", null, panel_3, null);
+	}
+	
+	
+	/*
+	 * method : stop() 
+	 * 모든 연결을 끊고 소켓을 닫음 
+	 * 위에서 IOException을 처리하기 위해서 호출 가능
+	 */
+	public static void stop() {
+		try {
+			dataIn.close();
+			dataOut.close();
+			socket.close();
+
+		} catch (IOException e) {
+			//label1.setText("Error : " + e.toString());
+		}
 	}
 }
