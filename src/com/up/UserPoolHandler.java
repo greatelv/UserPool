@@ -79,17 +79,19 @@ public class UserPoolHandler implements Runnable {
 					
 					switch(model.getMethod()){
 						case "post" :
-							/*System.out.println("이런젠장 "model.getGender());*/
+							System.out.println("성별 : "+model.getGender());
 							System.out.println("회원 등록");
 							break;
-						case "get" :
-							System.out.println("회원 조회");
-							
-							dataOut.writeUTF("User");
+						case "getOne" :
+							dataOut.writeUTF("wjswjs2|One");
 							dataOut.flush();
-							
 							break;
-						case "put" :
+						case "getList" :
+							System.out.println("!!!!!!!!getList");
+							dataOut.writeUTF("wjswjs|List");
+							dataOut.flush();
+							break;
+						case "edit" :
 							System.out.println("회원 수정");
 							break;
 						case "delete" :

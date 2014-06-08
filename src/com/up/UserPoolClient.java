@@ -195,7 +195,7 @@ public class UserPoolClient extends JFrame{
 				try {
 					
 					String message = parse.joinMessage("post", 
-							formId.getText(), formName.getText(), formMail.getText(), "남성", formPhone.getText(), formAddr.getText()); 
+							formId.getText(), formName.getText(), "남성", formMail.getText(), formPhone.getText(), formAddr.getText()); 
 					
 					dataOut.writeUTF(message);
 					dataOut.flush();
@@ -306,7 +306,9 @@ public class UserPoolClient extends JFrame{
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					dataOut.writeUTF("2");
+					String message = parse.joinMessage("getOne", "","","","","","");
+					
+					dataOut.writeUTF(message);
 					dataOut.flush();
 					String userData = dataIn.readUTF();
 					
