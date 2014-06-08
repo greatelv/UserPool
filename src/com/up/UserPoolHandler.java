@@ -10,12 +10,14 @@ import java.util.*;
  * 클라이언트로부터의 메시지를 받는 역할
  */
 public class UserPoolHandler implements Runnable {
+	
+	static String path = "userpooldb.txt";
+	
 	protected Socket socket;
 	protected DataInputStream dataIn;
 	protected DataOutputStream dataOut;
 	protected Thread listener;
 	private Date pdate;
-	
 	UserPoolParser parser = new UserPoolParser();
 
 	/**
@@ -73,31 +75,33 @@ public class UserPoolHandler implements Runnable {
 			while (!Thread.interrupted()) {
 				String message = dataIn.readUTF();
 				UserPoolModel model = parser.toModel(message);
-				
+				boolean result = true;
+
 				try {
 					System.out.println("model method : "+model.getMethod());
-					
+
 					switch(model.getMethod()){
-						case "post" :
-							System.out.println("성별 : "+model.getGender());
-							System.out.println("회원 등록");
-							break;
-						case "getOne" :
-							dataOut.writeUTF("wjswjs2|One");
-							dataOut.flush();
-							break;
-						case "getList" :
-							dataOut.writeUTF("wjswjs|List");
-							dataOut.flush();
-							break;
-						case "edit" :
-							System.out.println("회원 수정");
-							break;
-						case "delete" :
-							System.out.println("회원 삭제");
-							break;
+					case "post" :
+						result = addUser(message);
+						dataOut.writeUTF(String.valueOf(result));
+						dataOut.flush();
+						break;
+					case "getOne" :
+						dataOut.writeUTF("wjswjs2|One");
+						dataOut.flush();
+						break;
+					case "getList" :
+						dataOut.writeUTF("wjswjs|List");
+						dataOut.flush();
+						break;
+					case "edit" :
+						System.out.println("회원 수정");
+						break;
+					case "delete" :
+						System.out.println("회원 삭제");
+						break;
 					}
-					
+
 				} catch (NoSuchElementException e) {
 					stop();
 				}
@@ -112,5 +116,29 @@ public class UserPoolHandler implements Runnable {
 		} finally {
 			stop();
 		}
+	}
+
+	private boolean addUser(String userRow){
+		
+		boolean result = true;
+		String str = userRow + System.getProperty("line.separator");;
+        
+        FileWriter fw;
+		try {
+			fw = new FileWriter(new File(path), true);
+			fw.write(str);
+			
+	        fw.flush();
+	        fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			result = false;
+			
+		} finally{
+			
+		}
+		
+		return result;
 	}
 }

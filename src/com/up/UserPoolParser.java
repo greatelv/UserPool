@@ -12,11 +12,11 @@ public class UserPoolParser{
 		
 		mArray = message.split("\\|", -1);
 		
-		System.out.println("message : "+message);
+		/*System.out.println("message : "+message);
 		
 		for(int i=0; i<mArray.length; i++){
 			System.out.println("mArray : "+mArray[i]);	
-		}
+		}*/
 		
 		model.setMethod(mArray[0]);
 		model.setId(mArray[1]);
