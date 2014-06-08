@@ -87,7 +87,6 @@ public class UserPoolHandler implements Runnable {
 							dataOut.flush();
 							break;
 						case "getList" :
-							System.out.println("!!!!!!!!getList");
 							dataOut.writeUTF("wjswjs|List");
 							dataOut.flush();
 							break;
