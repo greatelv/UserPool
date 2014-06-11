@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Enumeration;
 
 public class UserPoolClient extends JFrame{
 
@@ -93,7 +94,9 @@ public class UserPoolClient extends JFrame{
 	}
 
 	/*
-	 * 회원정보를 서버로부터 조회해서 jTable에 동기화하는 메소드
+	 * 회원정보를 서버로부터 조회 후
+	 * 1. 회원정보의 jTable 동기화
+	 * 2. 회원관리의 콤보박스 동기화
 	 */
 	public void loadUserList(){
 		try {
@@ -116,6 +119,8 @@ public class UserPoolClient extends JFrame{
 				UserPoolModel uModel = parse.toModel(userList[i]);
 				model.addRow(new Object[]{uModel.getId(), uModel.getName(), uModel.getGender(), uModel.getPhone()});
 			}
+			
+			
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -209,12 +214,13 @@ public class UserPoolClient extends JFrame{
 		userRegTab.add(formName);
 		formName.setColumns(10);
 
-		JRadioButton rBtnFemale = new JRadioButton("여성");
+		final JRadioButton rBtnFemale = new JRadioButton("여성");
 		buttonGroup.add(rBtnFemale);
 		rBtnFemale.setBounds(79, 105, 57, 23);
 		userRegTab.add(rBtnFemale);
+		rBtnFemale.setSelected(true);
 
-		JRadioButton rBtnmale = new JRadioButton("남성");
+		final JRadioButton rBtnmale = new JRadioButton("남성");
 		buttonGroup.add(rBtnmale);
 		rBtnmale.setBounds(148, 105, 57, 23);
 		userRegTab.add(rBtnmale);
@@ -263,8 +269,10 @@ public class UserPoolClient extends JFrame{
 						JOptionPane.showMessageDialog(null, "주소를 입력해주세요.");
 					}else{
 						//폼 유효성검사를 모두 통과 후
+						
+						String gender = getSelectedButtonText(buttonGroup);
 						String message = parse.joinMessage("post", 
-								formId.getText(), formName.getText(), "남성", formMail.getText(), formPhone.getText(), formAddr.getText()); 
+								formId.getText(), formName.getText(), gender, formMail.getText(), formPhone.getText(), formAddr.getText()); 
 
 						dataOut.writeUTF(message);
 						dataOut.flush();
@@ -273,6 +281,12 @@ public class UserPoolClient extends JFrame{
 
 						if(result){
 							JOptionPane.showMessageDialog(null, "회원 등록이 완료되었습니다.");
+							formId.setText("");
+							formName.setText("");
+							rBtnFemale.setSelected(true);
+							formMail.setText("");
+							formPhone.setText("");
+							formAddr.setText("");
 						}else{
 							JOptionPane.showMessageDialog(null, "회원 등록에 문제가 발생했습니다.");
 						}
@@ -432,4 +446,21 @@ public class UserPoolClient extends JFrame{
 			//label1.setText("Error : " + e.toString());
 		}
 	}
+	
+	/**
+	 * Radio 버튼 중 어느것이 선택되었는가를 추출하는 외부 메소드
+	 */
+
+    public String getSelectedButtonText(ButtonGroup buttonGroup) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                return button.getText();
+            }
+        }
+
+        return null;
+    }
+
 }
