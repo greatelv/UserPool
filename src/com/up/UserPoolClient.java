@@ -22,6 +22,8 @@ public class UserPoolClient extends JFrame{
 	private static DataOutputStream dataOut;
 	private static boolean isLoad = false;
 
+	
+
 	UserPoolParser parse = new UserPoolParser();
 
 
@@ -63,6 +65,7 @@ public class UserPoolClient extends JFrame{
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				stop();
+				isLoad =  false;
 			}
 		});
 
