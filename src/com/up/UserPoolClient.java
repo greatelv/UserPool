@@ -384,6 +384,7 @@ public class UserPoolClient extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
+		btnDel.setEnabled(false);
 		userManTab.add(btnDel);
 
 		/**
@@ -405,6 +406,7 @@ public class UserPoolClient extends JFrame{
 
 			}
 		});
+		btnEdit.setEnabled(false);
 		userManTab.add(btnEdit);
 
 		/**
@@ -416,11 +418,12 @@ public class UserPoolClient extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		btnExport.setEnabled(false);
 		userManTab.add(btnExport);
 
 
 		JPanel copy = new JPanel();
-		tabbedPane.addTab("\uB9CC\uB4E0\uC774", null, copy, null);
+		tabbedPane.addTab("만든이", null, copy, null);
 		
 		
 		tabbedPane.addChangeListener(new ChangeListener() { //add the Listener
