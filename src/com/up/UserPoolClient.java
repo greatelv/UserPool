@@ -121,6 +121,7 @@ public class UserPoolClient extends JFrame{
 			e.printStackTrace();
 		}
 	}
+	
 
 	/**
 	 * Create the frame.
@@ -249,25 +250,40 @@ public class UserPoolClient extends JFrame{
 		btnReg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-
-					String message = parse.joinMessage("post", 
-							formId.getText(), formName.getText(), "남성", formMail.getText(), formPhone.getText(), formAddr.getText()); 
-
-					dataOut.writeUTF(message);
-					dataOut.flush();
-
-					boolean result = Boolean.parseBoolean(dataIn.readUTF());
-
-					if(result){
-						JOptionPane.showMessageDialog(null, "회원 등록이 완료되었습니다.");
+					//홈 유효성 검사
+					if(formId.getText().equals("")){
+						JOptionPane.showMessageDialog(null, "아이디를 입력해주세요.");
+					}else if(formName.getText().equals("")){
+						JOptionPane.showMessageDialog(null, "이름을 입력해주세요.");
+					}else if(formMail.getText().equals("")){
+						JOptionPane.showMessageDialog(null, "이메일을 입력해주세요.");
+					}else if(formPhone.getText().equals("")){
+						JOptionPane.showMessageDialog(null, "휴대폰번호를 입력해주세요.");
+					}else if(formAddr.getText().equals("")){
+						JOptionPane.showMessageDialog(null, "주소를 입력해주세요.");
 					}else{
-						JOptionPane.showMessageDialog(null, "회원 등록에 문제가 발생했습니다.");
-					}
+						//폼 유효성검사를 모두 통과 후
+						String message = parse.joinMessage("post", 
+								formId.getText(), formName.getText(), "남성", formMail.getText(), formPhone.getText(), formAddr.getText()); 
 
+						dataOut.writeUTF(message);
+						dataOut.flush();
+
+						boolean result = Boolean.parseBoolean(dataIn.readUTF());
+
+						if(result){
+							JOptionPane.showMessageDialog(null, "회원 등록이 완료되었습니다.");
+						}else{
+							JOptionPane.showMessageDialog(null, "회원 등록에 문제가 발생했습니다.");
+						}
+						
+					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
+			
 
 			}
 		});
