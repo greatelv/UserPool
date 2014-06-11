@@ -10,9 +10,9 @@ import java.util.*;
  * 클라이언트로부터의 메시지를 받는 역할
  */
 public class UserPoolHandler implements Runnable {
-	
+
 	static String path = "userpooldb.txt";
-	
+
 	protected Socket socket;
 	protected DataInputStream dataIn;
 	protected DataOutputStream dataOut;
@@ -91,7 +91,10 @@ public class UserPoolHandler implements Runnable {
 						dataOut.flush();
 						break;
 					case "getList" :
-						dataOut.writeUTF("wjswjs|List");
+						String userData = getTotalUser();
+						System.out.println("userData : "+userData);
+						
+						dataOut.writeUTF(userData);
 						dataOut.flush();
 						break;
 					case "edit" :
@@ -119,26 +122,68 @@ public class UserPoolHandler implements Runnable {
 	}
 
 	private boolean addUser(String userRow){
-		
+
 		boolean result = true;
-		String str = userRow + System.getProperty("line.separator");;
-        
-        FileWriter fw;
+		String str = userRow + System.getProperty("line.separator");
+
+		FileWriter fw;
 		try {
 			fw = new FileWriter(new File(path), true);
 			fw.write(str);
-			
-	        fw.flush();
-	        fw.close();
+			fw.flush();
+			fw.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = false;
-			
+
 		} finally{
-			
+
 		}
-		
+
+		return result;
+	}
+
+	private String getTotalUser(){
+
+		String result = "";
+		int lineIdx = 0;
+
+		try {
+			File fileDir = new File(path);
+			String seg = "";
+			
+			
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(
+							new FileInputStream(fileDir), "UTF8"));
+			
+
+			while ((seg = in.readLine()) != null){
+				if(lineIdx == 0){
+					result = result + seg;
+				}else{
+					result = result + System.getProperty("line.separator") + seg;
+				}
+				System.out.println("[Handler] "+ result);
+				lineIdx ++;
+			}
+
+			in.close();
+		} 
+		catch (UnsupportedEncodingException e){
+			System.out.println(e.getMessage());
+		} 
+		catch (IOException e){
+			System.out.println(e.getMessage());
+		}
+		catch (Exception e){
+			System.out.println(e.getMessage());
+		}finally{
+			lineIdx = 0;
+		}
+
+
 		return result;
 	}
 }

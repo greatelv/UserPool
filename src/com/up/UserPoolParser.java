@@ -1,5 +1,7 @@
 package com.up;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class UserPoolParser{
@@ -45,6 +47,11 @@ public class UserPoolParser{
 	
 	public String joinMessage(String method, String id, String name, String gender, String email, String phone, String addr){
 		return method+"|"+id+"|"+name+"|"+gender+"|"+email+"|"+phone+"|"+addr;
+	}
+	
+	public String[] toArray(String textData){
+		String[] result = textData.split(System.getProperty("line.separator"), -1);
+		return result;
 	}
 
 }

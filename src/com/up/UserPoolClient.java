@@ -8,6 +8,8 @@ import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.io.*;
@@ -18,12 +20,25 @@ public class UserPoolClient extends JFrame{
 	private static Socket socket;
 	private static DataInputStream dataIn;
 	private static DataOutputStream dataOut;
-	
+	private static boolean isLoad = false;
+
 	UserPoolParser parse = new UserPoolParser();
 
 
 	private JPanel contentPane;
 	private JTable table;
+
+	private DefaultTableModel model = new DefaultTableModel(new Object[][] {}, new String[]{"회원아이디", "회원명", "성별", "전화번호"}) {
+
+		Class[] columnTypes = new Class[] {
+				String.class, String.class, String.class, String.class
+		};
+
+		public Class getColumnClass(int columnIndex) {
+			return columnTypes[columnIndex];
+		}
+	};
+
 	private JTextField formName;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField formMail;
@@ -40,10 +55,10 @@ public class UserPoolClient extends JFrame{
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
+
 		UserPoolClient frame = new UserPoolClient();
 		frame.setVisible(true);
-		
+
 		//클라이언트 창이 닫혀질 시 이벤트 정의
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -61,9 +76,46 @@ public class UserPoolClient extends JFrame{
 			dataOut = new DataOutputStream(new BufferedOutputStream(socket
 					.getOutputStream()));
 
+			//초기 회원 데이터 로드
+			frame.loadUserList();
+
+			//최초 데이터 로딩 플래그
+			isLoad = true;
+
+
 		} catch (IOException ie) {
 			ie.printStackTrace();
 			stop();
+		}
+	}
+
+	/*
+	 * 회원정보를 서버로부터 조회해서 jTable에 동기화하는 메소드
+	 */
+	public void loadUserList(){
+		try {
+			
+			//동기화 전 전체 테이블의 Row를 비워주는 로직
+			int rows = model.getRowCount(); 
+			for(int i = rows - 1; i >=0; i--)
+			{
+				model.removeRow(i); 
+			}
+
+			String message = parse.joinMessage("getList","","","","","","");
+
+			dataOut.writeUTF(message);
+			dataOut.flush();
+
+			String[] userList = parse.toArray(dataIn.readUTF());
+
+			for(int i=0; i<userList.length; i++){
+				UserPoolModel uModel = parse.toModel(userList[i]);
+				model.addRow(new Object[]{uModel.getId(), uModel.getName(), uModel.getGender(), uModel.getPhone()});
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -93,9 +145,24 @@ public class UserPoolClient extends JFrame{
 		descLabel.setBounds(188, 22, 234, 56);
 		contentPane.add(descLabel);
 
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 99, 434, 382);
 		contentPane.add(tabbedPane);
+
+
+		tabbedPane.addChangeListener(new ChangeListener() { //add the Listener
+
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				System.out.println(tabbedPane.getSelectedIndex());
+
+				if(tabbedPane.getSelectedIndex()==0 && isLoad) //Index starts at 0, so Index 2 = Tab3
+				{
+					loadUserList();
+				}
+
+			}
+		});
 
 		JPanel userInfoTab = new JPanel();
 		tabbedPane.addTab("\uD68C\uC6D0\uC815\uBCF4", null, userInfoTab, null);
@@ -108,21 +175,7 @@ public class UserPoolClient extends JFrame{
 		table.setFillsViewportHeight(true);
 		table.setRowSelectionAllowed(false);
 		table.setBorder(null);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{"wjswjs2", "\uC804\uD0DC\uACBD", "\uB0A8\uC131", "010-5026-3671"},
-			},
-			new String[] {
-				"회원아이디", "\uD68C\uC6D0\uBA85", "\uC131\uBCC4", "\uC804\uD654\uBC88\uD638"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
+		table.setModel(model);
 		table.getColumnModel().getColumn(0).setResizable(false);
 		table.getColumnModel().getColumn(1).setResizable(false);
 		table.getColumnModel().getColumn(2).setResizable(false);
@@ -193,22 +246,30 @@ public class UserPoolClient extends JFrame{
 		btnReg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					
+
 					String message = parse.joinMessage("post", 
 							formId.getText(), formName.getText(), "남성", formMail.getText(), formPhone.getText(), formAddr.getText()); 
-					
+
 					dataOut.writeUTF(message);
 					dataOut.flush();
-					
+
+					boolean result = Boolean.parseBoolean(dataIn.readUTF());
+
+					if(result){
+						JOptionPane.showMessageDialog(null, "회원 등록이 완료되었습니다.");
+					}else{
+						JOptionPane.showMessageDialog(null, "회원 등록에 문제가 발생했습니다.");
+					}
+
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			}
 		});
 		userRegTab.add(btnReg);
-		
+
 
 		JLabel labelId = new JLabel("\uC544\uC774\uB514");
 		labelId.setBounds(12, 26, 57, 15);
@@ -271,7 +332,7 @@ public class UserPoolClient extends JFrame{
 		textField_8.setBounds(79, 238, 184, 21);
 		userManTab.add(textField_8);
 
-		
+
 
 		JLabel label_11 = new JLabel("\uC544\uC774\uB514");
 		label_11.setBounds(12, 26, 57, 15);
@@ -285,8 +346,8 @@ public class UserPoolClient extends JFrame{
 		JComboBox comboBox = new JComboBox();
 		comboBox.setBounds(319, 10, 98, 21);
 		userManTab.add(comboBox);
-		
-		
+
+
 		/**
 		 * 회원관리 - 회원 삭제
 		 */
@@ -297,7 +358,7 @@ public class UserPoolClient extends JFrame{
 			}
 		});
 		userManTab.add(btnDel);
-		
+
 		/**
 		 * 회원관리 - 회원 수정 
 		 */
@@ -307,20 +368,20 @@ public class UserPoolClient extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					String message = parse.joinMessage("getOne", "","","","","","");
-					
+
 					dataOut.writeUTF(message);
 					dataOut.flush();
 					String userData = dataIn.readUTF();
-					
+
 					System.out.println("userData : "+userData);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
+
 			}
 		});
 		userManTab.add(btnEdit);
-		
+
 		/**
 		 * 회원관리 - 회원 내보내기 
 		 */
@@ -331,7 +392,7 @@ public class UserPoolClient extends JFrame{
 			}
 		});
 		userManTab.add(btnExport);
-		
+
 
 		JPanel copy = new JPanel();
 		tabbedPane.addTab("\uB9CC\uB4E0\uC774", null, copy, null);
