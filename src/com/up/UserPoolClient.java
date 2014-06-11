@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListDataListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.io.*;
@@ -72,8 +73,6 @@ public class UserPoolClient extends JFrame{
 
 		try {
 			//클라이언트 실행시 소켓 서버 커넥션 획득
-			System.out.println("해피");
-
 			socket = new Socket("127.0.0.1", 9000);
 			dataIn = new DataInputStream(new BufferedInputStream(socket
 					.getInputStream()));
@@ -81,7 +80,14 @@ public class UserPoolClient extends JFrame{
 					.getOutputStream()));
 
 			//초기 회원 데이터 로드
-			frame.loadUserList();
+			
+			String[] userList = frame.getUserList();
+			
+			for(int i=0; i<userList.length; i++){
+				UserPoolModel uModel = frame.parse.toModel(userList[i]);
+				frame.model.addRow(new Object[]{uModel.getId(), uModel.getName(), uModel.getGender(), uModel.getPhone()});
+				//comboBox.addItem(uModel.getId());
+			}
 
 			//최초 데이터 로딩 플래그
 			isLoad = true;
@@ -98,7 +104,8 @@ public class UserPoolClient extends JFrame{
 	 * 1. 회원정보의 jTable 동기화
 	 * 2. 회원관리의 콤보박스 동기화
 	 */
-	public void loadUserList(){
+	public String[] getUserList(){
+		String[] userList = {};
 		try {
 			
 			//동기화 전 전체 테이블의 Row를 비워주는 로직
@@ -107,24 +114,22 @@ public class UserPoolClient extends JFrame{
 			{
 				model.removeRow(i); 
 			}
+			//comboBox.removeAll();
+			//comboBox.addItem("선택하세요");
+			
 
 			String message = parse.joinMessage("getList","","","","","","");
 
 			dataOut.writeUTF(message);
 			dataOut.flush();
 
-			String[] userList = parse.toArray(dataIn.readUTF());
-
-			for(int i=0; i<userList.length; i++){
-				UserPoolModel uModel = parse.toModel(userList[i]);
-				model.addRow(new Object[]{uModel.getId(), uModel.getName(), uModel.getGender(), uModel.getPhone()});
-			}
+			userList = parse.toArray(dataIn.readUTF());
 			
-			
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		return userList;
 	}
 	
 
@@ -158,21 +163,6 @@ public class UserPoolClient extends JFrame{
 		tabbedPane.setBounds(0, 99, 434, 382);
 		contentPane.add(tabbedPane);
 
-
-		tabbedPane.addChangeListener(new ChangeListener() { //add the Listener
-
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				System.out.println(tabbedPane.getSelectedIndex());
-
-				if(tabbedPane.getSelectedIndex()==0 && isLoad) //Index starts at 0, so Index 2 = Tab3
-				{
-					loadUserList();
-				}
-
-			}
-		});
-
 		JPanel userInfoTab = new JPanel();
 		tabbedPane.addTab("\uD68C\uC6D0\uC815\uBCF4", null, userInfoTab, null);
 		userInfoTab.setLayout(new BoxLayout(userInfoTab, BoxLayout.X_AXIS));
@@ -202,7 +192,7 @@ public class UserPoolClient extends JFrame{
 		userRegTab.add(labelName);
 
 		JLabel labelGender = new JLabel("\uC131\uBCC4");
-		labelGender.setBounds(12, 109, 24, 15);
+		labelGender.setBounds(12, 109, 37, 15);
 		userRegTab.add(labelGender);
 
 		JLabel labelMail = new JLabel("\uC774\uBA54\uC77C");
@@ -322,7 +312,7 @@ public class UserPoolClient extends JFrame{
 		userManTab.add(label_6);
 
 		JLabel label_7 = new JLabel("\uC131\uBCC4");
-		label_7.setBounds(12, 109, 24, 15);
+		label_7.setBounds(12, 109, 41, 15);
 		userManTab.add(label_7);
 
 		JLabel label_8 = new JLabel("\uC774\uBA54\uC77C");
@@ -375,10 +365,14 @@ public class UserPoolClient extends JFrame{
 		textField_9.setColumns(10);
 		textField_9.setBounds(79, 23, 116, 21);
 		userManTab.add(textField_9);
-
-		JComboBox comboBox = new JComboBox();
+		final JComboBox<String> comboBox = new JComboBox();
 		comboBox.setBounds(319, 10, 98, 21);
 		userManTab.add(comboBox);
+
+		//comboBox.setModel(aModel);
+		
+		comboBox.addItem("선택하세요");
+//		comboBox.add
 
 
 		/**
@@ -405,8 +399,6 @@ public class UserPoolClient extends JFrame{
 					dataOut.writeUTF(message);
 					dataOut.flush();
 					String userData = dataIn.readUTF();
-
-					System.out.println("userData : "+userData);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -429,6 +421,35 @@ public class UserPoolClient extends JFrame{
 
 		JPanel copy = new JPanel();
 		tabbedPane.addTab("\uB9CC\uB4E0\uC774", null, copy, null);
+		
+		
+		tabbedPane.addChangeListener(new ChangeListener() { //add the Listener
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				if(tabbedPane.getSelectedIndex()==0 && isLoad){	//회원정보의 테이블 초기화
+					String[] userList = getUserList();
+					
+					for(int i=0; i<userList.length; i++){
+						UserPoolModel uModel = parse.toModel(userList[i]);
+						model.addRow(new Object[]{uModel.getId(), uModel.getName(), uModel.getGender(), uModel.getPhone()});
+						//comboBox.addItem(uModel.getId());
+					}
+				}else if(tabbedPane.getSelectedIndex()==2){	//회원관리의 콤보박스 초기화
+					
+					comboBox.removeAllItems();
+					comboBox.addItem("선택하세요");
+					String[] userList = getUserList();
+					
+					for(int i=0; i<userList.length; i++){
+						UserPoolModel uModel = parse.toModel(userList[i]);
+						comboBox.addItem(uModel.getId());
+					}
+					
+				}
+
+			}
+		});
 	}
 
 	/*
