@@ -87,8 +87,12 @@ public class UserPoolHandler implements Runnable {
 						dataOut.flush();
 						break;
 					case "getOne" :
-						dataOut.writeUTF("wjswjs2|One");
+						
+						String userMessage = getOneUser(model.getId());
+						
+						dataOut.writeUTF(userMessage);
 						dataOut.flush();
+						
 						break;
 					case "getList" :
 						String userData = getTotalUser();
@@ -166,6 +170,50 @@ public class UserPoolHandler implements Runnable {
 					result = result + System.getProperty("line.separator") + seg;
 				}
 				System.out.println("[Handler] "+ result);
+				lineIdx ++;
+			}
+
+			in.close();
+		} 
+		catch (UnsupportedEncodingException e){
+			System.out.println(e.getMessage());
+		} 
+		catch (IOException e){
+			System.out.println(e.getMessage());
+		}
+		catch (Exception e){
+			System.out.println(e.getMessage());
+		}finally{
+			lineIdx = 0;
+		}
+
+
+		return result;
+	}
+	
+	private String getOneUser(String userId){
+
+		String result = "";
+		UserPoolModel user_model = new UserPoolModel();
+		int lineIdx = 0;
+
+		try {
+			File fileDir = new File(path);
+			String line = "";
+			
+			
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(
+							new FileInputStream(fileDir), "UTF8"));
+			
+			while ((line = in.readLine()) != null){
+				user_model = parser.toModel(line);
+				
+				if(user_model.getId().equals(userId)){
+					result = line;
+					break;
+				}
+				
 				lineIdx ++;
 			}
 

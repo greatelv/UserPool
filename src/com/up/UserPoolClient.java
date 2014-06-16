@@ -2,6 +2,8 @@ package com.up;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.*;
@@ -24,7 +26,7 @@ public class UserPoolClient extends JFrame{
 	private static DataOutputStream dataOut;
 	private static boolean isLoad = false;
 
-	
+
 
 	UserPoolParser parse = new UserPoolParser();
 
@@ -80,9 +82,9 @@ public class UserPoolClient extends JFrame{
 					.getOutputStream()));
 
 			//초기 회원 데이터 로드
-			
+
 			String[] userList = frame.getUserList();
-			
+
 			for(int i=0; i<userList.length; i++){
 				UserPoolModel uModel = frame.parse.toModel(userList[i]);
 				frame.model.addRow(new Object[]{uModel.getId(), uModel.getName(), uModel.getGender(), uModel.getPhone()});
@@ -107,7 +109,7 @@ public class UserPoolClient extends JFrame{
 	public String[] getUserList(){
 		String[] userList = {};
 		try {
-			
+
 			//동기화 전 전체 테이블의 Row를 비워주는 로직
 			int rows = model.getRowCount(); 
 			for(int i = rows - 1; i >=0; i--)
@@ -116,7 +118,7 @@ public class UserPoolClient extends JFrame{
 			}
 			//comboBox.removeAll();
 			//comboBox.addItem("선택하세요");
-			
+
 
 			String message = parse.joinMessage("getList","","","","","","");
 
@@ -124,14 +126,31 @@ public class UserPoolClient extends JFrame{
 			dataOut.flush();
 
 			userList = parse.toArray(dataIn.readUTF());
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return userList;
 	}
-	
+
+	/**
+	 * 회원관리에서 해당 아이디로 조회시 폼을 활성화 시키고 정보를 채워 넣는 메소드
+	 * @param userId
+	 */
+	public void setUserInfo(UserPoolModel model){
+		
+		try {
+			if(model.getId() != null){
+				
+			}else{
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	/**
 	 * Create the frame.
@@ -259,7 +278,7 @@ public class UserPoolClient extends JFrame{
 						JOptionPane.showMessageDialog(null, "주소를 입력해주세요.");
 					}else{
 						//폼 유효성검사를 모두 통과 후
-						
+
 						String gender = getSelectedButtonText(buttonGroup);
 						String message = parse.joinMessage("post", 
 								formId.getText(), formName.getText(), gender, formMail.getText(), formPhone.getText(), formAddr.getText()); 
@@ -280,14 +299,14 @@ public class UserPoolClient extends JFrame{
 						}else{
 							JOptionPane.showMessageDialog(null, "회원 등록에 문제가 발생했습니다.");
 						}
-						
+
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-			
+
+
 
 			}
 		});
@@ -368,11 +387,34 @@ public class UserPoolClient extends JFrame{
 		final JComboBox<String> comboBox = new JComboBox();
 		comboBox.setBounds(319, 10, 98, 21);
 		userManTab.add(comboBox);
-
-		//comboBox.setModel(aModel);
-		
 		comboBox.addItem("선택하세요");
-//		comboBox.add
+
+		comboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+
+				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+					String selectedId = arg0.getItem().toString();
+
+					if(!selectedId.equals("선택하세요 ")){
+						String message = parse.joinMessage("getOne", selectedId,"","","","","");
+
+						try {
+							dataOut.writeUTF(message);
+							dataOut.flush();
+
+							UserPoolModel model = parse.toModel(dataIn.readUTF());
+							
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					} 
+
+				}
+			}
+		});
 
 
 		/**
@@ -424,31 +466,31 @@ public class UserPoolClient extends JFrame{
 
 		JPanel copy = new JPanel();
 		tabbedPane.addTab("만든이", null, copy, null);
-		
-		
+
+
 		tabbedPane.addChangeListener(new ChangeListener() { //add the Listener
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				if(tabbedPane.getSelectedIndex()==0 && isLoad){	//회원정보의 테이블 초기화
 					String[] userList = getUserList();
-					
+
 					for(int i=0; i<userList.length; i++){
 						UserPoolModel uModel = parse.toModel(userList[i]);
 						model.addRow(new Object[]{uModel.getId(), uModel.getName(), uModel.getGender(), uModel.getPhone()});
 						//comboBox.addItem(uModel.getId());
 					}
 				}else if(tabbedPane.getSelectedIndex()==2){	//회원관리의 콤보박스 초기화
-					
+
 					comboBox.removeAllItems();
 					comboBox.addItem("선택하세요");
 					String[] userList = getUserList();
-					
+
 					for(int i=0; i<userList.length; i++){
 						UserPoolModel uModel = parse.toModel(userList[i]);
 						comboBox.addItem(uModel.getId());
 					}
-					
+
 				}
 
 			}
@@ -470,21 +512,21 @@ public class UserPoolClient extends JFrame{
 			//label1.setText("Error : " + e.toString());
 		}
 	}
-	
+
 	/**
 	 * Radio 버튼 중 어느것이 선택되었는가를 추출하는 외부 메소드
 	 */
 
-    public String getSelectedButtonText(ButtonGroup buttonGroup) {
-        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
+	public String getSelectedButtonText(ButtonGroup buttonGroup) {
+		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
 
-            if (button.isSelected()) {
-                return button.getText();
-            }
-        }
+			if (button.isSelected()) {
+				return button.getText();
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }
