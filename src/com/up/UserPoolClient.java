@@ -140,15 +140,7 @@ public class UserPoolClient extends JFrame{
 	 */
 	public void setUserInfo(UserPoolModel model){
 		
-		try {
-			if(model.getId() != null){
-				
-			}else{
-				
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 	}
 
 
@@ -188,7 +180,7 @@ public class UserPoolClient extends JFrame{
 
 		JScrollPane scrollPane = new JScrollPane();
 		userInfoTab.add(scrollPane);
-
+		
 		table = new JTable();
 		table.setFillsViewportHeight(true);
 		table.setRowSelectionAllowed(false);
@@ -202,14 +194,25 @@ public class UserPoolClient extends JFrame{
 		table.getColumnModel().getColumn(3).setPreferredWidth(90);
 		scrollPane.setViewportView(table);
 
+		/**
+		 * 탭 메뉴 패널 추가
+		 */
 		JPanel userRegTab = new JPanel();
 		tabbedPane.addTab("\uD68C\uC6D0\uB4F1\uB85D", null, userRegTab, null);
 		userRegTab.setLayout(null);
+		
+		JPanel userManTab = new JPanel();
+		userManTab.setLayout(null);
+		tabbedPane.addTab("\uD68C\uC6D0\uAD00\uB9AC", null, userManTab, null);
+		
+		JPanel copy = new JPanel();
+		tabbedPane.addTab("만든이", null, copy, null);
 
 		JLabel labelName = new JLabel("\uD68C\uC6D0\uBA85");
 		labelName.setBounds(12, 66, 57, 15);
 		userRegTab.add(labelName);
-
+		
+		
 		JLabel labelGender = new JLabel("\uC131\uBCC4");
 		labelGender.setBounds(12, 109, 37, 15);
 		userRegTab.add(labelGender);
@@ -322,11 +325,9 @@ public class UserPoolClient extends JFrame{
 		formId.setBounds(79, 23, 116, 21);
 		userRegTab.add(formId);
 
-		JPanel userManTab = new JPanel();
-		userManTab.setLayout(null);
-		tabbedPane.addTab("\uD68C\uC6D0\uAD00\uB9AC", null, userManTab, null);
+		
 
-		JLabel label_6 = new JLabel("\uD68C\uC6D0\uBA85");
+/*		JLabel label_6 = new JLabel("\uD68C\uC6D0\uBA85");
 		label_6.setBounds(12, 66, 57, 15);
 		userManTab.add(label_6);
 
@@ -383,44 +384,13 @@ public class UserPoolClient extends JFrame{
 		textField_9 = new JTextField();
 		textField_9.setColumns(10);
 		textField_9.setBounds(79, 23, 116, 21);
-		userManTab.add(textField_9);
-		final JComboBox<String> comboBox = new JComboBox();
-		comboBox.setBounds(319, 10, 98, 21);
-		userManTab.add(comboBox);
-		comboBox.addItem("선택하세요");
+		userManTab.add(textField_9);*/
 
-		comboBox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent arg0) {
-
-				if (arg0.getStateChange() == ItemEvent.SELECTED) {
-					String selectedId = arg0.getItem().toString();
-
-					if(!selectedId.equals("선택하세요 ")){
-						String message = parse.joinMessage("getOne", selectedId,"","","","","");
-
-						try {
-							dataOut.writeUTF(message);
-							dataOut.flush();
-
-							UserPoolModel model = parse.toModel(dataIn.readUTF());
-							
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-					} 
-
-				}
-			}
-		});
-
-
+		
 		/**
 		 * 회원관리 - 회원 삭제
 		 */
-		JButton btnDel = new JButton("삭제");
+		final JButton btnDel = new JButton("삭제");
 		btnDel.setBounds(0, 292, 195, 61);
 		btnDel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -432,7 +402,7 @@ public class UserPoolClient extends JFrame{
 		/**
 		 * 회원관리 - 회원 수정 
 		 */
-		JButton btnEdit = new JButton("수정");
+		final JButton btnEdit = new JButton("수정");
 		btnEdit.setBounds(234, 292, 195, 61);
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -454,7 +424,7 @@ public class UserPoolClient extends JFrame{
 		/**
 		 * 회원관리 - 회원 내보내기 
 		 */
-		JButton btnExport = new JButton("\uB0B4\uBCF4\uB0B4\uAE30");
+		final JButton btnExport = new JButton("\uB0B4\uBCF4\uB0B4\uAE30");
 		btnExport.setBounds(319, 41, 98, 23);
 		btnExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -463,11 +433,66 @@ public class UserPoolClient extends JFrame{
 		btnExport.setEnabled(false);
 		userManTab.add(btnExport);
 
+		
+		
+		final JComboBox<String> comboBox = new JComboBox();
+		comboBox.setBounds(319, 10, 98, 21);
+		userManTab.add(comboBox);
+		comboBox.addItem("선택하세요");
 
-		JPanel copy = new JPanel();
-		tabbedPane.addTab("만든이", null, copy, null);
+		comboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
 
+				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+					String selectedId = arg0.getItem().toString();
 
+					if(!selectedId.equals("선택하세요")){
+						String message = parse.joinMessage("getOne", selectedId,"","","","","");
+
+						try {
+							dataOut.writeUTF(message);
+							dataOut.flush();
+
+							UserPoolModel model = parse.toModel(dataIn.readUTF());
+							
+							if(model.getId() != null){
+								//버튼 활성화
+								btnDel.setEnabled(true);
+								btnEdit.setEnabled(true);
+								btnExport.setEnabled(true);
+								
+								System.out.println("mode get --> "+model.getId()+"||"+model.getName()+"||"+model.getEmail()+"||"+model.getPhone()+"||"+model.getAddress());
+								
+								//폼에 불러온 회원정보 설정
+								formId.setText(model.getId());
+								formName.setText(model.getName());
+								formMail.setText(model.getEmail());
+								formPhone.setText(model.getPhone());
+								formAddr.setText(model.getAddress());
+								
+								if(model.getGender().equals("남성")){
+									rBtnmale.setSelected(true);
+								}else{
+									rBtnFemale.setSelected(true);
+								}
+							}else{
+								JOptionPane.showMessageDialog(null, "회원정보를 불러오는데 실패했습니다.");
+							}
+							
+							
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					} 
+
+				}
+			}
+		});
+		
+		
 		tabbedPane.addChangeListener(new ChangeListener() { //add the Listener
 
 			@Override
