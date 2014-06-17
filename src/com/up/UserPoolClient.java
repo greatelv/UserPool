@@ -62,6 +62,10 @@ public class UserPoolClient extends JFrame{
 	private final JRadioButton rBtnFemale2;
 	private final JRadioButton rBtnmale2;
 	final JComboBox<String> comboBox;
+	
+	final JButton btnDel;
+	final JButton btnEdit;
+	final JButton btnExport;
 
 	/**
 	 * Launch the application.
@@ -399,7 +403,7 @@ public class UserPoolClient extends JFrame{
 		/**
 		 * 회원관리 - 회원 삭제
 		 */
-		final JButton btnDel = new JButton("삭제");
+		btnDel = new JButton("삭제");
 		btnDel.setBounds(0, 292, 195, 61);
 		btnDel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -432,7 +436,8 @@ public class UserPoolClient extends JFrame{
 		/**
 		 * 회원관리 - 회원 수정 
 		 */
-		final JButton btnEdit = new JButton("수정");
+		
+		btnEdit = new JButton("수정");
 		btnEdit.setBounds(234, 292, 195, 61);
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -464,7 +469,7 @@ public class UserPoolClient extends JFrame{
 		/**
 		 * 회원관리 - 회원 내보내기 
 		 */
-		final JButton btnExport = new JButton("\uB0B4\uBCF4\uB0B4\uAE30");
+		btnExport = new JButton("\uB0B4\uBCF4\uB0B4\uAE30");
 		btnExport.setBounds(319, 41, 98, 23);
 		btnExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -573,6 +578,10 @@ public class UserPoolClient extends JFrame{
 		formMail2.setText("");
 		formPhone2.setText("");
 		formAddr2.setText("");
+		
+		btnDel.setEnabled(false);
+		btnEdit.setEnabled(false);
+		btnExport.setEnabled(false);
 	}
 	
 	/*
