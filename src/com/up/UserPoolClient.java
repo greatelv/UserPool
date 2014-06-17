@@ -65,7 +65,6 @@ public class UserPoolClient extends JFrame{
 	
 	final JButton btnDel;
 	final JButton btnEdit;
-	final JButton btnExport;
 
 	/**
 	 * Launch the application.
@@ -217,6 +216,27 @@ public class UserPoolClient extends JFrame{
 		
 		JPanel copy = new JPanel();
 		tabbedPane.addTab("만든이", null, copy, null);
+		copy.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("\uC804\uD0DC\uACBD 08109369");
+		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 18));
+		lblNewLabel.setBounds(32, 246, 160, 38);
+		copy.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("New label");
+		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\Administrator\\Pictures\\jpeg.jpg"));
+		lblNewLabel_1.setBounds(32, 67, 160, 160);
+		copy.add(lblNewLabel_1);
+		
+		JLabel label = new JLabel("\uC870\uC7AC\uC601 08109375");
+		label.setFont(new Font("굴림", Font.BOLD, 18));
+		label.setBounds(234, 246, 160, 38);
+		copy.add(label);
+		
+		JLabel label_1 = new JLabel("New label");
+		label_1.setIcon(new ImageIcon("C:\\Users\\Administrator\\Pictures\\wrg.jpg"));
+		label_1.setBounds(234, 67, 160, 160);
+		copy.add(label_1);
 		
 		JLabel labelId = new JLabel("\uC544\uC774\uB514");
 		labelId.setBounds(12, 26, 57, 15);
@@ -466,18 +486,6 @@ public class UserPoolClient extends JFrame{
 		btnEdit.setEnabled(false);
 		userManTab.add(btnEdit);
 
-		/**
-		 * 회원관리 - 회원 내보내기 
-		 */
-		btnExport = new JButton("\uB0B4\uBCF4\uB0B4\uAE30");
-		btnExport.setBounds(319, 41, 98, 23);
-		btnExport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnExport.setEnabled(false);
-		userManTab.add(btnExport);
-
 		
 		
 		comboBox = new JComboBox();
@@ -505,7 +513,7 @@ public class UserPoolClient extends JFrame{
 								//버튼 활성화
 								btnDel.setEnabled(true);
 								btnEdit.setEnabled(true);
-								btnExport.setEnabled(true);
+								
 								
 								System.out.println("mode get --> "+model.getId()+"||"+model.getName()+"||"+model.getEmail()+"||"+model.getPhone()+"||"+model.getAddress());
 								
@@ -581,7 +589,6 @@ public class UserPoolClient extends JFrame{
 		
 		btnDel.setEnabled(false);
 		btnEdit.setEnabled(false);
-		btnExport.setEnabled(false);
 	}
 	
 	/*
@@ -615,5 +622,4 @@ public class UserPoolClient extends JFrame{
 
 		return null;
 	}
-
 }
