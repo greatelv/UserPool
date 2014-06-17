@@ -218,7 +218,7 @@ public class UserPoolHandler implements Runnable {
 			
 
 			while ((line = in.readLine()) != null){
-				System.out.println(lineIdx + " line : "+line);
+			
 				if(lineIdx == 0){
 					result = result + line;
 				}else{
@@ -241,7 +241,6 @@ public class UserPoolHandler implements Runnable {
 		}finally{
 			lineIdx = 0;
 		}
-
 
 		return result;
 	}

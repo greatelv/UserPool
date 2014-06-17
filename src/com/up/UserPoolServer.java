@@ -13,6 +13,8 @@ import java.util.Date;
  */
 public class UserPoolServer {
 	
+	static String path = "userpooldb.txt";
+	
 	public static void main(String args[]) throws IOException {
 		
 		//기본 포트 9000
@@ -21,6 +23,11 @@ public class UserPoolServer {
 		// 서버소켓 생성.
 		ServerSocket server = new ServerSocket(port);
 		System.out.println("## UserPoolServer Started");
+		
+		//회원 데이터베이스 파일이 존재하지 않을 시 생성
+		if(!new File(path).exists()){
+			new File(path).createNewFile();
+		}
 		
 		// 다수의 클라이언트의 접속을 받아드리기 위해서 무한반복 수행.
 		while (true) {
@@ -31,6 +38,8 @@ public class UserPoolServer {
             UserPoolHandler handler = new UserPoolHandler(socketClient);
 			handler.init();
 		}
+		
+		
 
 	}
 	

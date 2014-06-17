@@ -93,6 +93,7 @@ public class UserPoolClient extends JFrame{
 			//초기 회원 데이터 로드
 
 			String[] userList = frame.getUserList();
+			System.out.println("userList : "+userList.length);
 
 			for(int i=0; i<userList.length; i++){
 				UserPoolModel uModel = frame.parse.toModel(userList[i]);
@@ -133,9 +134,12 @@ public class UserPoolClient extends JFrame{
 
 			dataOut.writeUTF(message);
 			dataOut.flush();
-
-			userList = parse.toArray(dataIn.readUTF());
-
+			
+			String userListMessage = dataIn.readUTF();
+			
+			if(!userListMessage.equals("")){
+				userList = parse.toArray(userListMessage);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -553,9 +557,10 @@ public class UserPoolClient extends JFrame{
 
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
+				System.out.println("isLoad : "+isLoad);
 				if(tabbedPane.getSelectedIndex()==0 && isLoad){	//회원정보의 테이블 초기화
 					String[] userList = getUserList();
-
+					System.out.println("userList : "+userList.length);
 					for(int i=0; i<userList.length; i++){
 						UserPoolModel uModel = parse.toModel(userList[i]);
 						model.addRow(new Object[]{uModel.getId(), uModel.getName(), uModel.getGender(), uModel.getPhone()});
