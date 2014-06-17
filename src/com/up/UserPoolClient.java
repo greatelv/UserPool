@@ -436,11 +436,21 @@ public class UserPoolClient extends JFrame{
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					String message = parse.joinMessage("getOne", "","","","","","");
+					String gender = getSelectedButtonText(userManGenButtonGroup);
+					String message = parse.joinMessage("edit", 
+							formId2.getText(), formName2.getText(), gender, formMail2.getText(), formPhone2.getText(), formAddr2.getText()); 
 
 					dataOut.writeUTF(message);
 					dataOut.flush();
-					String userData = dataIn.readUTF();
+					
+					boolean result = Boolean.parseBoolean(dataIn.readUTF());
+					if(result){
+						JOptionPane.showMessageDialog(null, "회원 수정이 완료되었습니다.");
+					}else{
+						JOptionPane.showMessageDialog(null, "회원 수정에 문제가 발생했습니다.");
+						initUserManForm(comboBox);
+					}
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

@@ -101,7 +101,11 @@ public class UserPoolHandler implements Runnable {
 						dataOut.flush();
 						break;
 					case "edit" :
-						System.out.println("회원 수정");
+						result = deleteUser(model.getId());
+						result = addUser(message);
+						
+						dataOut.writeUTF(String.valueOf(result));
+						dataOut.flush();
 						break;
 					case "delete" :
 						result = deleteUser(model.getId());
