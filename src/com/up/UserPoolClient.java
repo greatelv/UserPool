@@ -343,6 +343,12 @@ public class UserPoolClient extends JFrame{
 		JLabel labelEmail2 = new JLabel("\uC774\uBA54\uC77C");
 		labelEmail2.setBounds(12, 152, 57, 15);
 		userManTab.add(labelEmail2);
+		
+		formId2 = new JTextField();
+		formId2.setColumns(10);
+		formId2.setBounds(79, 23, 116, 21);
+		userManTab.add(formId2);
+		formId2.setEditable(false);		//키값은 수정 불가능
 
 		formName2 = new JTextField();
 		formName2.setColumns(10);
@@ -388,11 +394,6 @@ public class UserPoolClient extends JFrame{
 		JLabel labelId2 = new JLabel("\uC544\uC774\uB514");
 		labelId2.setBounds(12, 26, 57, 15);
 		userManTab.add(labelId2);
-
-		formId2 = new JTextField();
-		formId2.setColumns(10);
-		formId2.setBounds(79, 23, 116, 21);
-		userManTab.add(formId2);
 
 		
 		/**

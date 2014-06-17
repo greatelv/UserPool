@@ -102,6 +102,7 @@ public class UserPoolHandler implements Runnable {
 						break;
 					case "edit" :
 						result = deleteUser(model.getId());
+						System.out.println("[delete Message] : "+message);
 						result = addUser(message);
 						
 						dataOut.writeUTF(String.valueOf(result));
@@ -170,6 +171,7 @@ public class UserPoolHandler implements Runnable {
 							new FileInputStream(fileDir), "UTF8"));
 			
 			while ((line = in.readLine()) != null){
+				System.out.println(lineIdx + " line : "+line);
 				user_model = parser.toModel(line);
 				
 				if(!user_model.getId().equals(userId)){
@@ -178,9 +180,11 @@ public class UserPoolHandler implements Runnable {
 					}else{
 						message = message + System.getProperty("line.separator") + line;
 					}
+					
+					lineIdx ++;
 				}
 				
-				lineIdx ++;
+				
 			}
 			
 			PrintWriter writer = new PrintWriter(fileDir);
@@ -205,7 +209,7 @@ public class UserPoolHandler implements Runnable {
 
 		try {
 			File fileDir = new File(path);
-			String seg = "";
+			String line = "";
 			
 			
 			BufferedReader in = new BufferedReader(
@@ -213,13 +217,14 @@ public class UserPoolHandler implements Runnable {
 							new FileInputStream(fileDir), "UTF8"));
 			
 
-			while ((seg = in.readLine()) != null){
+			while ((line = in.readLine()) != null){
+				System.out.println(lineIdx + " line : "+line);
 				if(lineIdx == 0){
-					result = result + seg;
+					result = result + line;
 				}else{
-					result = result + System.getProperty("line.separator") + seg;
+					result = result + System.getProperty("line.separator") + line;
 				}
-				System.out.println("[Handler] "+ result);
+				
 				lineIdx ++;
 			}
 
