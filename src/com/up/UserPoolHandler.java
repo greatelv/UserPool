@@ -76,10 +76,9 @@ public class UserPoolHandler implements Runnable {
 				String message = dataIn.readUTF();
 				UserPoolModel model = parser.toModel(message);
 				boolean result = true;
+				String userMessage = "";
 
 				try {
-					System.out.println("model method : "+model.getMethod());
-
 					switch(model.getMethod()){
 					case "post" :
 						result = addUser(message);
@@ -88,7 +87,7 @@ public class UserPoolHandler implements Runnable {
 						break;
 					case "getOne" :
 						
-						String userMessage = getOneUser(model.getId());
+						userMessage = getOneUser(model.getId());
 						
 						dataOut.writeUTF(userMessage);
 						dataOut.flush();
@@ -105,7 +104,9 @@ public class UserPoolHandler implements Runnable {
 						System.out.println("회원 수정");
 						break;
 					case "delete" :
-						System.out.println("회원 삭제");
+						result = deleteUser(model.getId());
+						dataOut.writeUTF(String.valueOf(result));
+						dataOut.flush();
 						break;
 					}
 
@@ -145,6 +146,51 @@ public class UserPoolHandler implements Runnable {
 
 		}
 
+		return result;
+	}
+	
+	private boolean deleteUser(String userId){
+
+		boolean result = true;
+		String message = "";
+		
+		UserPoolModel user_model = new UserPoolModel();
+		int lineIdx = 0;
+
+		try {
+			File fileDir = new File(path);
+			String line = "";
+			
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(
+							new FileInputStream(fileDir), "UTF8"));
+			
+			while ((line = in.readLine()) != null){
+				user_model = parser.toModel(line);
+				
+				if(!user_model.getId().equals(userId)){
+					if(lineIdx == 0){
+						message = message + line;
+					}else{
+						message = message + System.getProperty("line.separator") + line;
+					}
+				}
+				
+				lineIdx ++;
+			}
+			
+			PrintWriter writer = new PrintWriter(fileDir);
+			writer.print("");
+			writer.close();
+			
+			//System.out.println("message : "+message);
+			addUser(message);
+			
+			in.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		return result;
 	}
 

@@ -46,16 +46,22 @@ public class UserPoolClient extends JFrame{
 	};
 
 	private JTextField formName;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private final ButtonGroup userRegGenButtonGroup = new ButtonGroup();
+	private final ButtonGroup userManGenButtonGroup = new ButtonGroup();
 	private JTextField formMail;
 	private JTextField formPhone;
 	private JTextField formAddr;
 	private JTextField formId;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
+	
+	
+	private JTextField formName2;
+	private JTextField formMail2;
+	private JTextField formPhone2;
+	private JTextField formAddr2;
+	private JTextField formId2;
+	private final JRadioButton rBtnFemale2;
+	private final JRadioButton rBtnmale2;
+	final JComboBox<String> comboBox;
 
 	/**
 	 * Launch the application.
@@ -207,6 +213,15 @@ public class UserPoolClient extends JFrame{
 		
 		JPanel copy = new JPanel();
 		tabbedPane.addTab("만든이", null, copy, null);
+		
+		JLabel labelId = new JLabel("\uC544\uC774\uB514");
+		labelId.setBounds(12, 26, 57, 15);
+		userRegTab.add(labelId);
+
+		formId = new JTextField();
+		formId.setColumns(10);
+		formId.setBounds(79, 23, 116, 21);
+		userRegTab.add(formId);
 
 		JLabel labelName = new JLabel("\uD68C\uC6D0\uBA85");
 		labelName.setBounds(12, 66, 57, 15);
@@ -227,13 +242,13 @@ public class UserPoolClient extends JFrame{
 		formName.setColumns(10);
 
 		final JRadioButton rBtnFemale = new JRadioButton("여성");
-		buttonGroup.add(rBtnFemale);
+		userRegGenButtonGroup.add(rBtnFemale);
 		rBtnFemale.setBounds(79, 105, 57, 23);
 		userRegTab.add(rBtnFemale);
 		rBtnFemale.setSelected(true);
 
 		final JRadioButton rBtnmale = new JRadioButton("남성");
-		buttonGroup.add(rBtnmale);
+		userRegGenButtonGroup.add(rBtnmale);
 		rBtnmale.setBounds(148, 105, 57, 23);
 		userRegTab.add(rBtnmale);
 
@@ -282,7 +297,7 @@ public class UserPoolClient extends JFrame{
 					}else{
 						//폼 유효성검사를 모두 통과 후
 
-						String gender = getSelectedButtonText(buttonGroup);
+						String gender = getSelectedButtonText(userRegGenButtonGroup);
 						String message = parse.joinMessage("post", 
 								formId.getText(), formName.getText(), gender, formMail.getText(), formPhone.getText(), formAddr.getText()); 
 
@@ -314,77 +329,70 @@ public class UserPoolClient extends JFrame{
 			}
 		});
 		userRegTab.add(btnReg);
-
-
-		JLabel labelId = new JLabel("\uC544\uC774\uB514");
-		labelId.setBounds(12, 26, 57, 15);
-		userRegTab.add(labelId);
-
-		formId = new JTextField();
-		formId.setColumns(10);
-		formId.setBounds(79, 23, 116, 21);
-		userRegTab.add(formId);
-
 		
 
-/*		JLabel label_6 = new JLabel("\uD68C\uC6D0\uBA85");
-		label_6.setBounds(12, 66, 57, 15);
-		userManTab.add(label_6);
+		JLabel labelName2 = new JLabel("\uD68C\uC6D0\uBA85");
+		labelName2.setBounds(12, 66, 57, 15);
+		userManTab.add(labelName2);
+		
 
-		JLabel label_7 = new JLabel("\uC131\uBCC4");
-		label_7.setBounds(12, 109, 41, 15);
-		userManTab.add(label_7);
+		JLabel labelGender2 = new JLabel("\uC131\uBCC4");
+		labelGender2.setBounds(12, 109, 41, 15);
+		userManTab.add(labelGender2);
 
-		JLabel label_8 = new JLabel("\uC774\uBA54\uC77C");
-		label_8.setBounds(12, 152, 57, 15);
-		userManTab.add(label_8);
+		JLabel labelEmail2 = new JLabel("\uC774\uBA54\uC77C");
+		labelEmail2.setBounds(12, 152, 57, 15);
+		userManTab.add(labelEmail2);
 
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(79, 63, 116, 21);
-		userManTab.add(textField_5);
+		formName2 = new JTextField();
+		formName2.setColumns(10);
+		formName2.setBounds(79, 63, 116, 21);
+		userManTab.add(formName2);
 
-		JRadioButton radioButton_1 = new JRadioButton("\uC5EC\uC131");
-		radioButton_1.setBounds(79, 105, 57, 23);
-		userManTab.add(radioButton_1);
+		rBtnFemale2 = new JRadioButton("\uC5EC\uC131");
+		rBtnFemale2.setBounds(79, 105, 57, 23);
+		userManGenButtonGroup.add(rBtnFemale2);
+		userManTab.add(rBtnFemale2);
+		rBtnFemale2.setSelected(true);
 
-		JRadioButton radioButton_2 = new JRadioButton("\uB0A8\uC131");
-		radioButton_2.setBounds(148, 105, 57, 23);
-		userManTab.add(radioButton_2);
+		rBtnmale2 = new JRadioButton("\uB0A8\uC131");
+		rBtnmale2.setBounds(148, 105, 57, 23);
+		userManGenButtonGroup.add(rBtnmale2);
+		userManTab.add(rBtnmale2);
 
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(79, 149, 184, 21);
-		userManTab.add(textField_6);
+		formMail2 = new JTextField();
+		formMail2.setColumns(10);
+		formMail2.setBounds(79, 149, 184, 21);
+		userManTab.add(formMail2);
 
-		JLabel label_9 = new JLabel("\uD734\uB300\uD3F0");
-		label_9.setBounds(12, 197, 57, 15);
-		userManTab.add(label_9);
+		JLabel labelPhone2 = new JLabel("\uD734\uB300\uD3F0");
+		labelPhone2.setBounds(12, 197, 57, 15);
+		userManTab.add(labelPhone2);
 
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(79, 194, 184, 21);
-		userManTab.add(textField_7);
+		formPhone2 = new JTextField();
+		formPhone2.setColumns(10);
+		formPhone2.setBounds(79, 194, 184, 21);
+		userManTab.add(formPhone2);
 
-		JLabel label_10 = new JLabel("\uC8FC\uC18C");
-		label_10.setBounds(12, 241, 57, 15);
-		userManTab.add(label_10);
+		JLabel labelAddr2 = new JLabel("\uC8FC\uC18C");
+		labelAddr2.setBounds(12, 241, 57, 15);
+		userManTab.add(labelAddr2);
 
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		textField_8.setBounds(79, 238, 184, 21);
-		userManTab.add(textField_8);
+		formAddr2 = new JTextField();
+		formAddr2.setColumns(10);
+		formAddr2.setBounds(79, 238, 184, 21);
+		userManTab.add(formAddr2);
 
 
 
-		JLabel label_11 = new JLabel("\uC544\uC774\uB514");
-		label_11.setBounds(12, 26, 57, 15);
-		userManTab.add(label_11);
+		JLabel labelId2 = new JLabel("\uC544\uC774\uB514");
+		labelId2.setBounds(12, 26, 57, 15);
+		userManTab.add(labelId2);
 
-		textField_9 = new JTextField();
-		textField_9.setColumns(10);
-		textField_9.setBounds(79, 23, 116, 21);
-		userManTab.add(textField_9);*/
+		formId2 = new JTextField();
+		formId2.setColumns(10);
+		formId2.setBounds(79, 23, 116, 21);
+		userManTab.add(formId2);
 
 		
 		/**
@@ -394,6 +402,27 @@ public class UserPoolClient extends JFrame{
 		btnDel.setBounds(0, 292, 195, 61);
 		btnDel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String message = parse.joinMessage("delete", formId2.getText(),"","","","","");
+
+				try {
+					dataOut.writeUTF(message);
+					dataOut.flush();
+					
+					boolean result = Boolean.parseBoolean(dataIn.readUTF());
+
+					if(result){
+						JOptionPane.showMessageDialog(null, "회원 삭제가 완료되었습니다.");
+						initUserManForm(comboBox);
+					}else{
+						JOptionPane.showMessageDialog(null, "회원 삭제에 문제가 발생했습니다.");
+						initUserManForm(comboBox);
+					}
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
 		});
 		btnDel.setEnabled(false);
@@ -435,7 +464,7 @@ public class UserPoolClient extends JFrame{
 
 		
 		
-		final JComboBox<String> comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		comboBox.setBounds(319, 10, 98, 21);
 		userManTab.add(comboBox);
 		comboBox.addItem("선택하세요");
@@ -465,16 +494,19 @@ public class UserPoolClient extends JFrame{
 								System.out.println("mode get --> "+model.getId()+"||"+model.getName()+"||"+model.getEmail()+"||"+model.getPhone()+"||"+model.getAddress());
 								
 								//폼에 불러온 회원정보 설정
-								formId.setText(model.getId());
-								formName.setText(model.getName());
-								formMail.setText(model.getEmail());
-								formPhone.setText(model.getPhone());
-								formAddr.setText(model.getAddress());
+								formId2.setText(model.getId());
+								formName2.setText(model.getName());
+								formMail2.setText(model.getEmail());
+								formPhone2.setText(model.getPhone());
+								formAddr2.setText(model.getAddress());
+								
+								//성별 정보를 불러오기 전 Radio 버튼 초기화
+								rBtnFemale2.setSelected(true);
 								
 								if(model.getGender().equals("남성")){
-									rBtnmale.setSelected(true);
+									rBtnmale2.setSelected(true);
 								}else{
-									rBtnFemale.setSelected(true);
+									rBtnFemale2.setSelected(true);
 								}
 							}else{
 								JOptionPane.showMessageDialog(null, "회원정보를 불러오는데 실패했습니다.");
@@ -504,24 +536,34 @@ public class UserPoolClient extends JFrame{
 						UserPoolModel uModel = parse.toModel(userList[i]);
 						model.addRow(new Object[]{uModel.getId(), uModel.getName(), uModel.getGender(), uModel.getPhone()});
 						//comboBox.addItem(uModel.getId());
-					}
+					}					
+					
 				}else if(tabbedPane.getSelectedIndex()==2){	//회원관리의 콤보박스 초기화
-
-					comboBox.removeAllItems();
-					comboBox.addItem("선택하세요");
-					String[] userList = getUserList();
-
-					for(int i=0; i<userList.length; i++){
-						UserPoolModel uModel = parse.toModel(userList[i]);
-						comboBox.addItem(uModel.getId());
-					}
-
+					initUserManForm(comboBox);
 				}
 
 			}
 		});
 	}
+	
+	private void initUserManForm(JComboBox<String> combobox){
+		combobox.removeAllItems();
+		combobox.addItem("선택하세요");
+		String[] userList = getUserList();
 
+		for(int i=0; i<userList.length; i++){
+			UserPoolModel uModel = parse.toModel(userList[i]);
+			combobox.addItem(uModel.getId());
+		}
+		
+		formId2.setText("");
+		formName2.setText("");
+		rBtnFemale2.setSelected(true);
+		formMail2.setText("");
+		formPhone2.setText("");
+		formAddr2.setText("");
+	}
+	
 	/*
 	 * method : stop() 
 	 * 모든 연결을 끊고 소켓을 닫음 
