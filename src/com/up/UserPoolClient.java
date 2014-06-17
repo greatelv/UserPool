@@ -224,7 +224,7 @@ public class UserPoolClient extends JFrame{
 		copy.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\Administrator\\Pictures\\jpeg.jpg"));
+		lblNewLabel_1.setIcon(new ImageIcon(this.getClass().getResource("/com/resource/jpeg.jpg")));
 		lblNewLabel_1.setBounds(32, 67, 160, 160);
 		copy.add(lblNewLabel_1);
 		
@@ -234,7 +234,7 @@ public class UserPoolClient extends JFrame{
 		copy.add(label);
 		
 		JLabel label_1 = new JLabel("New label");
-		label_1.setIcon(new ImageIcon("C:\\Users\\Administrator\\Pictures\\wrg.jpg"));
+		label_1.setIcon(new ImageIcon(this.getClass().getResource("/com/resource/wrg.jpg")));
 		label_1.setBounds(234, 67, 160, 160);
 		copy.add(label_1);
 		
