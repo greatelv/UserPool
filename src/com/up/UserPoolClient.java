@@ -161,43 +161,66 @@ public class UserPoolClient extends JFrame{
 	 * Create the frame.
 	 */
 	public UserPoolClient() {
+		
+		setBounds(100, 100, 450, 520);	//스윙 윈도우 사이즈
 		setTitle("User Pool - 종합 회원관리시스템 ");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 520);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		setContentPane(contentPane);
 
 		JLabel logoLabel = new JLabel("User Pool");
+		JTextPane descLabel = new JTextPane();
+		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		
 		logoLabel.setVerticalAlignment(SwingConstants.TOP);
 		logoLabel.setForeground(Color.PINK);
 		logoLabel.setFont(new Font("Arial", Font.PLAIN, 30));
-		logoLabel.setBounds(23, 34, 142, 35);
-		contentPane.add(logoLabel);
 
-		JTextPane descLabel = new JTextPane();
 		descLabel.setEditable(false);
 		descLabel.setBackground(SystemColor.inactiveCaption);
 		descLabel.setText(""
 				+ "UserPool이란? \r\n"
 				+ "종합회원관리 기능을 제공하는\r\n"
 				+ "Swing 프로그램 입니다.");
-				
+		
+		
+		logoLabel.setBounds(23, 34, 142, 35);		
 		descLabel.setBounds(188, 22, 234, 56);
-		contentPane.add(descLabel);
-
-		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 99, 434, 382);
+
+		contentPane.add(logoLabel);
+		contentPane.add(descLabel);
 		contentPane.add(tabbedPane);
 
+		/**
+		 * 탭 메뉴 패널 추가
+		 */
 		JPanel userInfoTab = new JPanel();
-		tabbedPane.addTab("회원정보", null, userInfoTab, null);
+		JPanel userRegTab = new JPanel();
+		JPanel userManTab = new JPanel();
+		JPanel copy = new JPanel();
+
 		userInfoTab.setLayout(new BoxLayout(userInfoTab, BoxLayout.X_AXIS));
-
+		userRegTab.setLayout(null);
+		userManTab.setLayout(null);
+		copy.setLayout(null);
+		
+		tabbedPane.addTab("회원정보", userInfoTab);
+		tabbedPane.addTab("회원등록", userRegTab);
+		tabbedPane.addTab("회원관리", userManTab);
+		tabbedPane.addTab("만든이", copy);
+		
+		/**
+		 * ######### 회원정보 UI 컴포넌트 
+		 */
+		
 		JScrollPane scrollPane = new JScrollPane();
-		userInfoTab.add(scrollPane);
-
+		
+		//회원정보의 테이블 프로퍼티 설정
 		table = new JTable();
 		table.setFillsViewportHeight(true);
 		table.setRowSelectionAllowed(false);
@@ -210,88 +233,72 @@ public class UserPoolClient extends JFrame{
 		table.getColumnModel().getColumn(3).setResizable(false);
 		table.getColumnModel().getColumn(3).setPreferredWidth(90);
 		scrollPane.setViewportView(table);
+		
+		userInfoTab.add(scrollPane);
 
-		/**
-		 * 탭 메뉴 패널 추가
-		 */
-		JPanel userRegTab = new JPanel();
-		tabbedPane.addTab("회원등록", null, userRegTab, null);
-		userRegTab.setLayout(null);
-
-		JPanel userManTab = new JPanel();
-		userManTab.setLayout(null);
-		tabbedPane.addTab("회원관리", null, userManTab, null);
-
-		JPanel copy = new JPanel();
-		tabbedPane.addTab("만든이", null, copy, null);
-		copy.setLayout(null);
-
+		//회원정보  - 라벨 초기화
 		JLabel labelId = new JLabel("아이디");
-		labelId.setBounds(12, 26, 57, 15);
-		userRegTab.add(labelId);
-
-		formId = new JTextField();
-		formId.setColumns(10);
-		formId.setBounds(79, 23, 116, 21);
-		userRegTab.add(formId);
-
 		JLabel labelName = new JLabel("회원명");
-		labelName.setBounds(12, 66, 57, 15);
-		userRegTab.add(labelName);
-
-
 		JLabel labelGender = new JLabel("성별");
-		labelGender.setBounds(12, 109, 37, 15);
-		userRegTab.add(labelGender);
-
 		JLabel labelMail = new JLabel("이메일");
-		labelMail.setBounds(12, 152, 57, 15);
-		userRegTab.add(labelMail);
-
-		formName = new JTextField();
-		formName.setBounds(79, 63, 116, 21);
-		userRegTab.add(formName);
-		formName.setColumns(10);
-
-		final JRadioButton rBtnFemale = new JRadioButton("여성");
-		userRegGenButtonGroup.add(rBtnFemale);
-		rBtnFemale.setBounds(79, 105, 57, 23);
-		userRegTab.add(rBtnFemale);
-		rBtnFemale.setSelected(true);
-
-		final JRadioButton rBtnmale = new JRadioButton("남성");
-		userRegGenButtonGroup.add(rBtnmale);
-		rBtnmale.setBounds(148, 105, 57, 23);
-		userRegTab.add(rBtnmale);
-
-		formMail = new JTextField();
-		formMail.setBounds(79, 149, 184, 21);
-		userRegTab.add(formMail);
-		formMail.setColumns(10);
-
 		JLabel labelPhone = new JLabel("휴대폰");
-		labelPhone.setBounds(12, 197, 57, 15);
-		userRegTab.add(labelPhone);
-
-		formPhone = new JTextField();
-		formPhone.setColumns(10);
-		formPhone.setBounds(79, 194, 184, 21);
-		userRegTab.add(formPhone);
-
 		JLabel labelAddr = new JLabel("주소");
-		labelAddr.setBounds(12, 241, 57, 15); 
+		
+		labelId.setBounds(12, 26, 57, 15);
+		labelName.setBounds(12, 66, 57, 15);
+		labelGender.setBounds(12, 109, 37, 15);
+		labelMail.setBounds(12, 152, 57, 15);
+		labelPhone.setBounds(12, 197, 57, 15);
+		labelAddr.setBounds(12, 241, 57, 15);
+		
+		userRegTab.add(labelId);
+		userRegTab.add(labelName);
+		userRegTab.add(labelGender);
+		userRegTab.add(labelMail);
+		userRegTab.add(labelPhone);
 		userRegTab.add(labelAddr);
-
+		
+		//회원정보 - 필드 초기화
+		formId = new JTextField();
+		formName = new JTextField();
+		final JRadioButton rBtnFemale = new JRadioButton("여성");
+		final JRadioButton rBtnmale = new JRadioButton("남성");
+		formMail = new JTextField();
+		formPhone = new JTextField();
 		formAddr = new JTextField();
+		JButton btnReg = new JButton("등록");
+		
+		formId.setColumns(10);
+		formName.setColumns(10);
+		formMail.setColumns(10);
+		formPhone.setColumns(10);
 		formAddr.setColumns(10);
+		
+		formId.setBounds(79, 23, 116, 21);
+		formName.setBounds(79, 63, 116, 21);
+		rBtnFemale.setBounds(79, 105, 57, 23);
+		rBtnmale.setBounds(148, 105, 57, 23);
+		formMail.setBounds(79, 149, 184, 21);
+		formPhone.setBounds(79, 194, 184, 21);
 		formAddr.setBounds(79, 238, 184, 21);
+		btnReg.setBounds(0, 292, 429, 61);
+		
+		userRegTab.add(formId);
+		userRegTab.add(formName);
+		userRegTab.add(rBtnFemale);
+		userRegTab.add(rBtnmale);
+		userRegTab.add(formMail);
+		userRegTab.add(formPhone);
 		userRegTab.add(formAddr);
 
+		userRegGenButtonGroup.add(rBtnFemale);
+		userRegGenButtonGroup.add(rBtnmale);
+		
+		rBtnFemale.setSelected(true);
+
 		/**
-		 * 회원등록 - 회원 등록
+		 * 등록 버튼 핸들러
 		 */
-		JButton btnReg = new JButton("등록");
-		btnReg.setBounds(0, 292, 429, 61);
 		btnReg.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -341,76 +348,83 @@ public class UserPoolClient extends JFrame{
 			}
 		});
 		userRegTab.add(btnReg);
+		
+		/**
+		 * ######### 회원등록 UI 컴포넌트 
+		 */
 
 		JLabel labelId2 = new JLabel("아이디");
-		labelId2.setBounds(12, 26, 57, 15);
-		userManTab.add(labelId2);
-
 		JLabel labelName2 = new JLabel("회원명");
-		labelName2.setBounds(12, 66, 57, 15);
-		userManTab.add(labelName2);
-
-
 		JLabel labelGender2 = new JLabel("성별");
-		labelGender2.setBounds(12, 109, 41, 15);
-		userManTab.add(labelGender2);
-
 		JLabel labelEmail2 = new JLabel("이메일");
-		labelEmail2.setBounds(12, 152, 57, 15);
-		userManTab.add(labelEmail2);
-
-		formId2 = new JTextField();
-		formId2.setColumns(10);
-		formId2.setBounds(79, 23, 116, 21);
-		userManTab.add(formId2);
-		formId2.setEditable(false);		//키값은 수정 불가능
-
-		formName2 = new JTextField();
-		formName2.setColumns(10);
-		formName2.setBounds(79, 63, 116, 21);
-		userManTab.add(formName2);
-
-		rBtnFemale2 = new JRadioButton("여성");
-		rBtnFemale2.setBounds(79, 105, 57, 23);
-		userManGenButtonGroup.add(rBtnFemale2);
-		userManTab.add(rBtnFemale2);
-		rBtnFemale2.setSelected(true);
-
-		rBtnmale2 = new JRadioButton("남성");
-		rBtnmale2.setBounds(148, 105, 57, 23);
-		userManGenButtonGroup.add(rBtnmale2);
-		userManTab.add(rBtnmale2);
-
-		formMail2 = new JTextField();
-		formMail2.setColumns(10);
-		formMail2.setBounds(79, 149, 184, 21);
-		userManTab.add(formMail2);
-
 		JLabel labelPhone2 = new JLabel("휴대폰");
-		labelPhone2.setBounds(12, 197, 57, 15);
-		userManTab.add(labelPhone2);
-
-		formPhone2 = new JTextField();
-		formPhone2.setColumns(10);
-		formPhone2.setBounds(79, 194, 184, 21);
-		userManTab.add(formPhone2);
-
 		JLabel labelAddr2 = new JLabel("주소");
+		
+		
+		labelId2.setBounds(12, 26, 57, 15);
+		labelName2.setBounds(12, 66, 57, 15);
+		labelGender2.setBounds(12, 109, 41, 15);
+		labelEmail2.setBounds(12, 152, 57, 15);
+		labelPhone2.setBounds(12, 197, 57, 15);
 		labelAddr2.setBounds(12, 241, 57, 15);
+		
+		userManTab.add(labelId2);
+		userManTab.add(labelName2);
+		userManTab.add(labelGender2);
+		userManTab.add(labelEmail2);
+		userManTab.add(labelPhone2);
 		userManTab.add(labelAddr2);
 
+		formId2 = new JTextField();
+		formName2 = new JTextField();
+		rBtnFemale2 = new JRadioButton("여성");
+		rBtnmale2 = new JRadioButton("남성");
+		formMail2 = new JTextField();
+		formPhone2 = new JTextField();
 		formAddr2 = new JTextField();
+		btnDel = new JButton("삭제");
+		btnEdit = new JButton("수정");
+		comboBox = new JComboBox();
+		
+		formId2.setColumns(10);
+		formName2.setColumns(10);
+		formMail2.setColumns(10);
+		formPhone2.setColumns(10);
 		formAddr2.setColumns(10);
+		
+		formId2.setBounds(79, 23, 116, 21);
+		formName2.setBounds(79, 63, 116, 21);
+		rBtnFemale2.setBounds(79, 105, 57, 23);
+		rBtnmale2.setBounds(148, 105, 57, 23);
+		formMail2.setBounds(79, 149, 184, 21);
+		formPhone2.setBounds(79, 194, 184, 21);
 		formAddr2.setBounds(79, 238, 184, 21);
+		btnDel.setBounds(0, 292, 195, 61);
+		btnEdit.setBounds(234, 292, 195, 61);
+		comboBox.setBounds(319, 10, 98, 21);
+		
+		userManTab.add(formId2);
+		userManTab.add(formName2);
+		userManTab.add(rBtnFemale2);
+		userManTab.add(rBtnmale2);
+		userManTab.add(formMail2);		
+		userManTab.add(formPhone2);
 		userManTab.add(formAddr2);
+		
+		userManGenButtonGroup.add(rBtnFemale2);
+		userManGenButtonGroup.add(rBtnmale2);
 
+		
+		formId2.setEditable(false);		//키값은 수정 불가능
+		rBtnFemale2.setSelected(true);
+		btnDel.setEnabled(false);
+		btnEdit.setEnabled(false);
+		comboBox.addItem("선택하세요");
 
 
 		/**
-		 * 회원관리 - 회원 삭제
+		 * 삭제 버튼 핸들러
 		 */
-		btnDel = new JButton("삭제");
-		btnDel.setBounds(0, 292, 195, 61);
 		btnDel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String message = parse.joinMessage("delete", formId2.getText(),"","","","","");
@@ -436,15 +450,12 @@ public class UserPoolClient extends JFrame{
 
 			}
 		});
-		btnDel.setEnabled(false);
+		
 		userManTab.add(btnDel);
 
 		/**
-		 * 회원관리 - 회원 수정 
+		 * 수정 버튼 핸들러 
 		 */
-
-		btnEdit = new JButton("수정");
-		btnEdit.setBounds(234, 292, 195, 61);
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -469,16 +480,12 @@ public class UserPoolClient extends JFrame{
 
 			}
 		});
-		btnEdit.setEnabled(false);
+		
 		userManTab.add(btnEdit);
 
-
-
-		comboBox = new JComboBox();
-		comboBox.setBounds(319, 10, 98, 21);
-		userManTab.add(comboBox);
-		comboBox.addItem("선택하세요");
-
+		/**
+		 * 회원 선택 콤보박스 핸들러
+		 */
 		comboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
@@ -533,26 +540,32 @@ public class UserPoolClient extends JFrame{
 				}
 			}
 		});
-
-		JLabel lblNewLabel = new JLabel("전태경 08109369");
-		lblNewLabel.setFont(new Font("굴림", Font.BOLD, 18));
-		lblNewLabel.setBounds(32, 246, 160, 38);
-		copy.add(lblNewLabel);
-
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(this.getClass().getResource("/com/resource/jpeg.jpg")));
-		lblNewLabel_1.setBounds(32, 67, 160, 160);
-		copy.add(lblNewLabel_1);
-
-		JLabel label = new JLabel("조재영 08109375");
-		label.setFont(new Font("굴림", Font.BOLD, 18));
-		label.setBounds(234, 246, 160, 38);
-		copy.add(label);
-
-		JLabel label_1 = new JLabel("");
-		label_1.setIcon(new ImageIcon(this.getClass().getResource("/com/resource/wrg.jpg")));
-		label_1.setBounds(234, 67, 160, 160);
-		copy.add(label_1);
+		userManTab.add(comboBox);
+		
+		/**
+		 * ######### 만든이 UI 컴포넌트 
+		 */
+		
+		JLabel member1 = new JLabel("전태경 08109369");
+		JLabel member1Pic = new JLabel("");
+		JLabel member2 = new JLabel("조재영 08109375");
+		JLabel member2Pic = new JLabel("");
+		
+		member1.setFont(new Font("굴림", Font.BOLD, 18));
+		member2.setFont(new Font("굴림", Font.BOLD, 18));
+		
+		member1Pic.setIcon(new ImageIcon(this.getClass().getResource("/com/resource/jpeg.jpg")));
+		member2Pic.setIcon(new ImageIcon(this.getClass().getResource("/com/resource/wrg.jpg")));
+		
+		member1.setBounds(32, 246, 160, 38);
+		member1Pic.setBounds(32, 67, 160, 160);
+		member2.setBounds(234, 246, 160, 38);
+		member2Pic.setBounds(234, 67, 160, 160);
+		
+		copy.add(member1);
+		copy.add(member1Pic);
+		copy.add(member2);
+		copy.add(member2Pic);
 
 
 		tabbedPane.addChangeListener(new ChangeListener() { //add the Listener
